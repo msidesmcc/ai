@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Hardy-Weinberg Equilibrium</title>
+    <!-- Tailwind CSS for modern premium UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-emerald-700 via-teal-800 to-cyan-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                    <svg class="w-8 h-8 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold tracking-wider text-emerald-300 uppercase block">Bio 101: Population Genetics</span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Hardy-Weinberg Mastery</h1>
+                </div>
+            </div>
+            <div class="text-center md:text-right bg-white/5 border border-white/10 rounded-xl px-4 py-2 backdrop-blur-sm">
+                <p class="text-sm text-emerald-100">Welcome to your Biology Lab!</p>
+                <p class="text-xs text-emerald-200 mt-0.5">Instructor: Professor Algenib</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-1 overflow-x-auto py-2">
+                <button onclick="switchTab('basics')" id="tab-basics" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap bg-emerald-50 text-emerald-700 shadow-sm border border-emerald-200/50">
+                    Step 1: The Beetle Island Concept
+                </button>
+                <button onclick="switchTab('formulas')" id="tab-formulas" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                    Step 2: The Two Formulas
+                </button>
+                <button onclick="switchTab('wizard')" id="tab-wizard" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                    Step 3: Guided Tutor
+                </button>
+                <button onclick="switchTab('solver')" id="tab-solver" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                    H-W Interactive Auto-Solver
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                    Step 4: Practice Quiz
+                </button>
+                <button onclick="switchTab('sandbox')" id="tab-sandbox" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                    Sandbox Simulator
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Body -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- ==================== TAB 1: THE BASICS ==================== -->
+        <section id="content-basics" class="tab-content block space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Concept Card -->
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                        <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-500 rounded-full"></span>
+                        Conceptual Introduction
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-900">Welcome to Sandy Beetle Island!</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        Imagine a beautiful, secluded island populated by a single species of beetle. These beetles come in two colors:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-4 p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                            <div class="w-12 h-12 flex-shrink-0 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                <!-- Beetle SVG Green (Dominant) -->
+                                <svg class="w-10 h-10 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2a4 4 0 0 0-4 4v1.07A7.001 7.001 0 0 0 3 14v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a7.001 7.001 0 0 0-5-6.93V6a4 4 0 0 0-4-4zm-2 5V6a2 2 0 1 1 4 0v1h-4zm7 7H7v-1a5 5 0 0 1 10 0v1z"/>
+                                    <circle cx="9" cy="11" r="1"/>
+                                    <circle cx="15" cy="11" r="1"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-emerald-900">Green Beetles (Dominant)</h4>
+                                <p class="text-xs text-emerald-700">Can be Genotype <strong>GG</strong> or <strong>Gg</strong></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-xl bg-amber-50 border border-amber-100">
+                            <div class="w-12 h-12 flex-shrink-0 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                <!-- Beetle SVG Amber (Recessive) -->
+                                <svg class="w-10 h-10 text-amber-600" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2a4 4 0 0 0-4 4v1.07A7.001 7.001 0 0 0 3 14v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a7.001 7.001 0 0 0-5-6.93V6a4 4 0 0 0-4-4zm-2 5V6a2 2 0 1 1 4 0v1h-4zm7 7H7v-1a5 5 0 0 1 10 0v1z"/>
+                                    <circle cx="9" cy="11" r="1"/>
+                                    <circle cx="15" cy="11" r="1"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-900">Gold Beetles (Recessive)</h4>
+                                <p class="text-xs text-amber-700">Must be Genotype <strong>gg</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 pt-2">
+                        <h3 class="font-bold text-slate-800 text-lg">Key Terms You MUST Know First:</h3>
+                        <div class="space-y-2 text-sm text-slate-600">
+                            <p>🧬 <strong class="text-slate-800">Allele:</strong> A single version of a gene. Here we have <span class="text-emerald-600 font-bold">G</span> (dominant, green) and <span class="text-amber-600 font-bold">g</span> (recessive, gold).</p>
+                            <p>🧩 <strong class="text-slate-800">Genotype:</strong> The combination of two alleles inside an individual (<span class="font-semibold">GG</span>, <span class="font-semibold">Gg</span>, or <span class="font-semibold">gg</span>).</p>
+                            <p>🎨 <strong class="text-slate-800">Phenotype:</strong> The physical appearance (Green or Gold).</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-100 border-l-4 border-slate-500 p-4 rounded-r-xl">
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            🌿 <strong>The Hardy-Weinberg Principle</strong> is like a mathematical mirror. It tells us what happens to allele frequencies in a population if there is <strong>NO EVOLUTION</strong> (no selection, no mutations, random mating, infinite size, and no migration). In this ideal state, the alleles stay perfectly constant!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive Visualizer Panel -->
+                <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-900 text-lg">Interactive Allele Pool</h3>
+                            <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">Real-time update</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-6">Drag the slider to shift the allele ratio on Beetle Island and observe how it instantly changes the physical phenotypes inside the habitat pool.</p>
+                        
+                        <!-- Allele Slider Component -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
+                            <div class="flex justify-between font-bold text-sm mb-2">
+                                <span class="text-emerald-700">Dominant (G) frequency (p): <span id="p-label" class="code-font text-base">0.60</span></span>
+                                <span class="text-amber-700">Recessive (g) frequency (q): <span id="q-label" class="code-font text-base">0.40</span></span>
+                            </div>
+                            <input type="range" id="allele-slider" min="0" max="1" step="0.05" value="0.60" class="w-full accent-emerald-600 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-xs text-slate-400 mt-1 font-semibold">
+                                <span>100% G (p=1.0)</span>
+                                <span>50% each (0.5)</span>
+                                <span>100% g (q=1.0)</span>
+                            </div>
+                        </div>
+
+                        <!-- Population Habitat Container -->
+                        <div class="border border-slate-200 rounded-xl p-4 bg-gradient-to-b from-stone-50 to-stone-100 min-h-[220px]">
+                            <h4 class="text-xs uppercase font-extrabold tracking-wider text-stone-500 mb-3 text-center">Island Population Preview (N=30)</h4>
+                            <div id="beetle-grid" class="grid grid-cols-6 sm:grid-cols-10 gap-2 justify-items-center">
+                                <!-- Beetles generated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Population Summary Stats -->
+                    <div class="grid grid-cols-3 gap-2 mt-4 text-center">
+                        <div class="p-2 bg-emerald-50 rounded-lg border border-emerald-100">
+                            <p class="text-[10px] font-bold text-emerald-800 uppercase">Homozygous Dominant (GG)</p>
+                            <p id="stat-gg" class="text-lg font-black text-emerald-900 code-font">36%</p>
+                        </div>
+                        <div class="p-2 bg-teal-50 rounded-lg border border-teal-100">
+                            <p class="text-[10px] font-bold text-teal-800 uppercase">Heterozygous (Gg)</p>
+                            <p id="stat-gg_hetero" class="text-lg font-black text-teal-900 code-font">48%</p>
+                        </div>
+                        <div class="p-2 bg-amber-50 rounded-lg border border-amber-100">
+                            <p class="text-[10px] font-bold text-amber-800 uppercase">Homozygous Recessive (gg)</p>
+                            <p id="stat-gg_rec" class="text-lg font-black text-amber-900 code-font">16%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conceptual Check For Understanding -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Quick Check: If alleles are so simple, why can't we just look at a Green beetle and know its exact genes?
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border border-slate-100 hover:border-emerald-500 hover:bg-emerald-50/25 p-4 rounded-xl cursor-pointer transition-all duration-200" onclick="answerQuickCheck(false)">
+                        <p class="font-bold text-slate-800 text-sm">A) Because green alleles change color depending on the temperature.</p>
+                        <p class="text-xs text-slate-500 mt-1">Incorrect. Beetle color is purely genetically determined on this island.</p>
+                    </div>
+                    <div class="border border-slate-100 hover:border-emerald-500 hover:bg-emerald-50/25 p-4 rounded-xl cursor-pointer transition-all duration-200" onclick="answerQuickCheck(true)">
+                        <p class="font-bold text-slate-800 text-sm">B) Because both "GG" and "Gg" beetles look completely identical (Green) on the outside.</p>
+                        <p class="text-xs text-slate-500 mt-1">Correct! Dominant genes hide recessive genes, so physical features can lie about genotypes.</p>
+                    </div>
+                </div>
+                <div id="check-feedback" class="mt-4 hidden p-3 rounded-lg text-sm text-center font-semibold"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: THE FORMULAS ==================== -->
+        <section id="content-formulas" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Mathematical breakdown -->
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+                    <div>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                            The Math Decoded
+                        </span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-2">The Two Golden Equations</h2>
+                        <p class="text-slate-600 text-sm mt-1">To solve any Hardy-Weinberg problem, you only need to master two basic formulas.</p>
+                    </div>
+
+                    <!-- Formula 1 -->
+                    <div class="p-5 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Equation 1: Allele Frequencies</span>
+                        <div class="text-3xl font-extrabold text-slate-900 my-2 code-font">p + q = 1</div>
+                        <div class="space-y-1.5 text-xs text-slate-600">
+                            <p>• <strong>p</strong> = Frequency of the <span class="font-bold text-emerald-700">Dominant allele</span> (e.g., Green allele G)</p>
+                            <p>• <strong>q</strong> = Frequency of the <span class="font-bold text-amber-700">Recessive allele</span> (e.g., Gold allele g)</p>
+                            <p class="text-slate-500 italic mt-1">💡 Real-world tip: If 60% of all alleles are G (p = 0.60), then 40% must be g (q = 0.40) because 0.60 + 0.40 = 1.</p>
+                        </div>
+                    </div>
+
+                    <!-- Formula 2 -->
+                    <div class="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-800">Equation 2: Individual / Genotype Frequencies</span>
+                        <div class="text-3xl font-extrabold text-slate-900 my-2 code-font">p² + 2pq + q² = 1</div>
+                        <div class="space-y-1.5 text-xs text-slate-600">
+                            <p>• <strong>p²</strong> = Frequency of <span class="font-bold text-indigo-700">Homozygous Dominant</span> individuals (GG)</p>
+                            <p>• <strong>2pq</strong> = Frequency of <span class="font-bold text-indigo-700">Heterozygous</span> individuals (Gg)</p>
+                            <p>• <strong>q²</strong> = Frequency of <span class="font-bold text-indigo-700">Homozygous Recessive</span> individuals (gg)</p>
+                            <p class="text-slate-500 italic mt-1">💡 Real-world tip: In a study, you can count physical recessive individuals (gg) easily because they look different. Therefore, you always start solving from <strong>q²</strong>!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Punnett Area Square -->
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-1">Visualizing as a Punnett Square</h3>
+                        <p class="text-xs text-slate-500 mb-6">Observe how the areas of the boxes correspond directly to the genotype frequencies ($p^2$, $2pq$, $q^2$). Drag the handle to adjust $p$ and $q$ proportions.</p>
+
+                        <!-- Area Control Slider -->
+                        <div class="flex items-center gap-4 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                            <span class="text-xs font-semibold text-slate-500">Adjust p value:</span>
+                            <input type="range" id="punnett-slider" min="0.05" max="0.95" step="0.05" value="0.6" class="flex-1 accent-indigo-600 h-1.5 bg-slate-200 rounded-lg">
+                            <span class="text-sm font-bold code-font text-indigo-700 w-12" id="punnett-val-label">p=0.60</span>
+                        </div>
+
+                        <!-- Interactive Grid Container -->
+                        <div class="relative w-full max-w-[320px] aspect-square mx-auto border-2 border-slate-300 rounded-xl overflow-hidden bg-slate-100 shadow-sm">
+                            <!-- Horizontal Axis label (Top) -->
+                            <div class="absolute top-0 left-0 w-full flex text-[10px] font-extrabold text-slate-500 text-center py-0.5">
+                                <div id="p-top-axis" class="bg-emerald-100/40 border-r border-slate-300 transition-all duration-300">G (p)</div>
+                                <div id="q-top-axis" class="bg-amber-100/40 transition-all duration-300">g (q)</div>
+                            </div>
+
+                            <!-- Inner Squares -->
+                            <div class="w-full h-full pt-4 pl-4 relative flex flex-wrap">
+                                <!-- GG box -->
+                                <div id="box-gg" class="bg-emerald-500/20 hover:bg-emerald-500/30 border-r border-b border-dashed border-slate-400 flex flex-col items-center justify-center transition-all duration-200">
+                                    <span class="font-extrabold text-emerald-800 text-sm">p² (GG)</span>
+                                    <span id="label-gg" class="text-xs code-font text-emerald-700">0.36</span>
+                                </div>
+                                <!-- Gg box (Top Right) -->
+                                <div id="box-gq" class="bg-teal-500/20 hover:bg-teal-500/30 border-b border-dashed border-slate-400 flex flex-col items-center justify-center transition-all duration-200">
+                                    <span class="font-extrabold text-teal-800 text-sm">pq (Gg)</span>
+                                    <span id="label-gq" class="text-xs code-font text-teal-700">0.24</span>
+                                </div>
+                                <!-- gG box (Bottom Left) -->
+                                <div id="box-qg" class="bg-teal-500/20 hover:bg-teal-500/30 border-r border-dashed border-slate-400 flex flex-col items-center justify-center transition-all duration-200">
+                                    <span class="font-extrabold text-teal-800 text-sm">pq (gG)</span>
+                                    <span id="label-qg" class="text-xs code-font text-teal-700">0.24</span>
+                                </div>
+                                <!-- gg box -->
+                                <div id="box-qq" class="bg-amber-500/20 hover:bg-amber-500/30 flex flex-col items-center justify-center transition-all duration-200">
+                                    <span class="font-extrabold text-amber-800 text-sm">q² (gg)</span>
+                                    <span id="label-qq" class="text-xs code-font text-amber-700">0.16</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sum Check visualizer -->
+                    <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 text-center">Calculated Equation View</h4>
+                        <div class="flex flex-wrap items-center justify-center gap-1.5 text-sm font-semibold">
+                            <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded code-font" id="eq-p2">0.36</span>
+                            <span>+</span>
+                            <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded code-font" id="eq-2pq">0.48</span>
+                            <span>+</span>
+                            <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded code-font" id="eq-q2">0.16</span>
+                            <span>=</span>
+                            <span class="bg-slate-200 text-slate-800 px-2.5 py-1 rounded font-bold code-font">1.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: GUIDED WIZARD ==================== -->
+        <section id="content-wizard" class="tab-content hidden space-y-6">
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-800 to-teal-800 p-6 text-white">
+                    <h2 class="text-xl font-bold">The Step-By-Step Interactive Master Trainer</h2>
+                    <p class="text-emerald-100 text-xs mt-1">Let's solve a real biology exam question together, step-by-step. Don't worry, we will help you if you get stuck!</p>
+                </div>
+
+                <!-- Problem Statement Card -->
+                <div class="p-6 sm:p-8 bg-slate-50 border-b border-slate-200">
+                    <div class="flex items-start gap-4">
+                        <span class="bg-emerald-100 text-emerald-800 p-2 rounded-lg font-bold text-sm">PROBLEM</span>
+                        <div>
+                            <p class="font-bold text-slate-800 leading-relaxed text-base">
+                                "On a remote island, you discover a population of 500 rabbits. You count <span class="text-amber-600 underline decoration-2 font-bold">80 white rabbits</span>, which is the homozygous recessive phenotype. The other 420 rabbits are black. Under Hardy-Weinberg equilibrium, calculate the number of heterozygous rabbits in this population."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step Tabs UI inside wizard -->
+                <div class="p-6 sm:p-8 space-y-8">
+                    <!-- Progress Bar -->
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-400 font-bold uppercase mb-2">
+                            <span>Step progress</span>
+                            <span id="wizard-progress-text">Step 1 of 4</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div id="wizard-progress-bar" class="bg-emerald-600 h-2 rounded-full transition-all duration-300" style="width: 25%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 Pane -->
+                    <div id="wiz-step-1" class="space-y-4">
+                        <div class="border-l-4 border-emerald-500 pl-4">
+                            <h3 class="font-bold text-slate-800 text-lg">Step 1: Identify the Recessive Phenotype Frequency ($q^2$)</h3>
+                            <p class="text-xs text-slate-500">We always start with the recessive trait! In our formulas, white rabbits are $q^2$.</p>
+                        </div>
+                        <p class="text-sm text-slate-600 font-medium">To find $q^2$, divide the number of white rabbits (<span class="font-semibold text-slate-800">80</span>) by the total population (<span class="font-semibold text-slate-800">500</span>).</p>
+                        
+                        <div class="flex flex-col sm:flex-row items-center gap-4 py-2">
+                            <div class="flex items-center gap-2">
+                                <span class="font-semibold text-slate-600">q² = 80 / 500 =</span>
+                                <input type="number" id="wiz-ans-1" step="0.01" class="border border-slate-300 rounded-lg p-2 w-28 text-center font-bold code-font focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="0.00">
+                            </div>
+                            <button onclick="checkWizardStep(1)" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors shadow">Verify Step 1</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 Pane (Hidden at first) -->
+                    <div id="wiz-step-2" class="space-y-4 hidden opacity-0 transition-all duration-300">
+                        <div class="border-l-4 border-emerald-500 pl-4">
+                            <h3 class="font-bold text-slate-800 text-lg">Step 2: Find the Recessive Allele Frequency ($q$)</h3>
+                            <p class="text-xs text-slate-500">To go from $q^2$ to $q$, we must take the square root of $q^2$.</p>
+                        </div>
+                        <p class="text-sm text-slate-600 font-medium">You verified $q^2 = 0.16$. Now, what is the square root of $0.16$?</p>
+                        
+                        <div class="flex flex-col sm:flex-row items-center gap-4 py-2">
+                            <div class="flex items-center gap-2">
+                                <span class="font-semibold text-slate-600">q = √0.16 =</span>
+                                <input type="number" id="wiz-ans-2" step="0.1" class="border border-slate-300 rounded-lg p-2 w-28 text-center font-bold code-font focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="0.00">
+                            </div>
+                            <button onclick="checkWizardStep(2)" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors shadow">Verify Step 2</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 Pane (Hidden) -->
+                    <div id="wiz-step-3" class="space-y-4 hidden opacity-0 transition-all duration-300">
+                        <div class="border-l-4 border-emerald-500 pl-4">
+                            <h3 class="font-bold text-slate-800 text-lg">Step 3: Find the Dominant Allele Frequency ($p$)</h3>
+                            <p class="text-xs text-slate-500">Since $p + q = 1$, we can easily isolate $p$!</p>
+                        </div>
+                        <p class="text-sm text-slate-600 font-medium">You know that $q = 0.4$. Use the equation: $p = 1 - q$ to solve for $p$.</p>
+                        
+                        <div class="flex flex-col sm:flex-row items-center gap-4 py-2">
+                            <div class="flex items-center gap-2">
+                                <span class="font-semibold text-slate-600">p = 1 - 0.4 =</span>
+                                <input type="number" id="wiz-ans-3" step="0.1" class="border border-slate-300 rounded-lg p-2 w-28 text-center font-bold code-font focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="0.00">
+                            </div>
+                            <button onclick="checkWizardStep(3)" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors shadow">Verify Step 3</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 Pane (Hidden) -->
+                    <div id="wiz-step-4" class="space-y-4 hidden opacity-0 transition-all duration-300">
+                        <div class="border-l-4 border-emerald-500 pl-4">
+                            <h3 class="font-bold text-slate-800 text-lg">Step 4: Calculate the Total Heterozygous Individuals ($2pq \times N$)</h3>
+                            <p class="text-xs text-slate-500">First calculate the frequency ($2pq$), then multiply by the population size ($500$).</p>
+                        </div>
+                        <p class="text-sm text-slate-600 font-medium">Using $p = 0.6$ and $q = 0.4$, calculate the number of heterozygous individuals ($2 \times p \times q \times 500$).</p>
+                        
+                        <div class="flex flex-col sm:flex-row items-center gap-4 py-2">
+                            <div class="flex items-center gap-2">
+                                <span class="font-semibold text-slate-600">Heterozygous Count =</span>
+                                <input type="number" id="wiz-ans-4" class="border border-slate-300 rounded-lg p-2 w-32 text-center font-bold code-font focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Count">
+                            </div>
+                            <button onclick="checkWizardStep(4)" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors shadow">Verify Final Answer</button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Feedback Message Box -->
+                    <div id="wizard-feedback" class="hidden p-4 rounded-xl border flex items-start gap-3">
+                        <span id="wizard-feedback-icon" class="text-xl"></span>
+                        <div>
+                            <h4 id="wizard-feedback-title" class="font-bold"></h4>
+                            <p id="wizard-feedback-desc" class="text-xs mt-0.5 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: INTERACTIVE AUTO-SOLVER ==================== -->
+        <section id="content-solver" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Inputs and Config -->
+                <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-violet-100 text-violet-800">
+                        Homework Helper
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-900">Hardy-Weinberg Equation Solver</h2>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Input any known variables from your homework, and the engine will calculate all other frequencies instantly, detailing the custom logical steps!
+                    </p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">1. Total Population Size (N)</label>
+                            <input type="number" id="sol-pop" value="1000" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-violet-500 outline-none font-semibold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">2. Choose your Starting Given Variable</label>
+                            <select id="sol-type" onchange="toggleSolverInput()" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-violet-500 outline-none font-semibold bg-white">
+                                <option value="q2">Recessive Phenotype/Genotype Frequency (q²)</option>
+                                <option value="q">Recessive Allele Frequency (q)</option>
+                                <option value="p">Dominant Allele Frequency (p)</option>
+                                <option value="p2">Homozygous Dominant Frequency (p²)</option>
+                                <option value="count_rec">Count of Recessive Individuals (gg)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="sol-input-label" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Enter Value for q² (e.g., 0.16)</label>
+                            <input type="number" id="sol-input-val" value="0.16" step="0.01" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-violet-500 outline-none font-semibold code-font">
+                        </div>
+                        <button onclick="calculateSolve()" class="w-full py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-sm font-bold tracking-wide transition-all shadow-md">Solve Step-by-Step</button>
+                    </div>
+                </div>
+
+                <!-- Custom Step-by-Step Output -->
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-violet-500"></span>
+                            Generated Custom Solution
+                        </h3>
+
+                        <!-- Results Card Grid -->
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6">
+                            <div class="p-2 bg-slate-50 border border-slate-100 rounded-lg text-center">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">p</p>
+                                <p id="sol-res-p" class="text-sm font-bold code-font text-violet-700">-</p>
+                            </div>
+                            <div class="p-2 bg-slate-50 border border-slate-100 rounded-lg text-center">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">q</p>
+                                <p id="sol-res-q" class="text-sm font-bold code-font text-violet-700">-</p>
+                            </div>
+                            <div class="p-2 bg-slate-50 border border-slate-100 rounded-lg text-center">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">p² (GG)</p>
+                                <p id="sol-res-p2" class="text-sm font-bold code-font text-violet-700">-</p>
+                            </div>
+                            <div class="p-2 bg-slate-50 border border-slate-100 rounded-lg text-center">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">2pq (Gg)</p>
+                                <p id="sol-res-2pq" class="text-sm font-bold code-font text-violet-700">-</p>
+                            </div>
+                            <div class="p-2 bg-slate-50 border border-slate-100 rounded-lg text-center">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">q² (gg)</p>
+                                <p id="sol-res-q2" class="text-sm font-bold code-font text-violet-700">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Generated Text Steps -->
+                        <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-4 max-h-[340px] overflow-y-auto" id="sol-steps-container">
+                            <p class="text-xs text-slate-400 italic text-center py-8">Adjust parameters and click "Solve" to generate custom textbook-grade mathematical proofs.</p>
+                        </div>
+                    </div>
+
+                    <!-- Individual counts output -->
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-2">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Estimated Individual Counts (N = <span id="sol-out-pop-count">1000</span>)</span>
+                        <div class="flex gap-2 text-[11px] font-bold">
+                            <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded">GG: <span id="sol-count-gg" class="code-font">-</span></span>
+                            <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded">Gg: <span id="sol-count-2pq" class="code-font">-</span></span>
+                            <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded">gg: <span id="sol-count-gg-rec" class="code-font">-</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PRACTICE QUIZ ==================== -->
+        <section id="content-quiz" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Interactive Quiz Area -->
+                <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+                    <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-500">Practice Exam Simulator</span>
+                            <h2 class="text-xl font-bold text-slate-900 mt-1">Test Your Mastery</h2>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-500 font-semibold block">Your Score</span>
+                            <span class="text-lg font-black text-slate-800" id="quiz-score">0 / 4</span>
+                        </div>
+                    </div>
+
+                    <!-- Active Quiz Question -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 text-xs font-bold rounded-full" id="quiz-q-num">Question 1 of 4</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 leading-relaxed" id="quiz-q-text">Loading question text...</h3>
+                        
+                        <div class="space-y-2 pt-2" id="quiz-options-container">
+                            <!-- Dynamic Options generated in JS -->
+                        </div>
+                    </div>
+
+                    <!-- Solution/Explanation Box (Hidden until answer selected) -->
+                    <div id="quiz-explanation-box" class="hidden p-5 rounded-2xl border bg-slate-50 space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl" id="quiz-exp-icon">💡</span>
+                            <h4 class="font-extrabold text-sm text-slate-900" id="quiz-exp-title">Correct Explanatory Guide</h4>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed" id="quiz-exp-body"></p>
+                    </div>
+
+                    <!-- Next button -->
+                    <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                        <button onclick="resetQuiz()" class="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors">Restart Quiz</button>
+                        <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 disabled:pointer-events-none text-white text-sm font-semibold rounded-lg transition-all shadow-md" disabled>
+                            Next Question
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Professor's Advice Board -->
+                <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-4">Instructor Tips for Success</h3>
+                        <div class="space-y-4">
+                            <div class="flex gap-3">
+                                <span class="text-xl">💡</span>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-800">Identify Phenotypes First</h4>
+                                    <p class="text-xs text-slate-500 leading-relaxed mt-0.5">Always look for words like "recessive trait", "recessive disease", or "white/blonde/short". These always represent $q^2$.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-xl">⚠️</span>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-800">Don't Mix Up Alleles with Individuals</h4>
+                                    <p class="text-xs text-slate-500 leading-relaxed mt-0.5">Allele frequency queries want $p$ or $q$. Individual frequency queries want $p^2$, $2pq$, or $q^2$. If they want individual COUNT, multiply the frequency by total population.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-xl">🔍</span>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-800">Check Your Sums</h4>
+                                    <p class="text-xs text-slate-500 leading-relaxed mt-0.5">Ensure $p + q$ always equals exactly $1.0$. If they do not, you made an arithmetic error.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 rounded-xl bg-rose-50 border border-rose-100 text-center">
+                        <p class="text-[10px] font-extrabold tracking-wider text-rose-800 uppercase mb-1">Struggling?</p>
+                        <p class="text-xs text-rose-700 leading-relaxed">
+                            Use the <strong class="cursor-pointer underline" onclick="switchTab('solver')">Auto-Solver tool</strong> to verify your school homework problems!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: SANDBOX SIMULATOR ==================== -->
+        <section id="content-sandbox" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Controls panel -->
+                <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-cyan-100 text-cyan-800">
+                        Advanced Simulation
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-900">Island Micro-Evolution Sandbox</h2>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        In the real world, the Hardy-Weinberg assumptions can be broken. Adjust these variables to see how genetic drift, natural selection, or migration alter populations over 100 generations!
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- Initial p -->
+                        <div>
+                            <div class="flex justify-between text-xs font-bold uppercase text-slate-500 mb-1.5">
+                                <span>Initial Allele Frequency (p)</span>
+                                <span id="sand-p-label" class="code-font text-cyan-700">0.50</span>
+                            </div>
+                            <input type="range" id="sand-p" min="0.1" max="0.9" step="0.05" value="0.50" class="w-full accent-cyan-600 h-1.5 bg-slate-200 rounded-lg">
+                        </div>
+
+                        <!-- Population size (drift strength) -->
+                        <div>
+                            <div class="flex justify-between text-xs font-bold uppercase text-slate-500 mb-1.5">
+                                <span>Population Size (N)</span>
+                                <span id="sand-pop-label" class="code-font text-cyan-700">500</span>
+                            </div>
+                            <select id="sand-pop" class="w-full border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-cyan-500 outline-none font-semibold bg-white">
+                                <option value="50">50 (Severe Genetic Drift)</option>
+                                <option value="200">200 (Moderate Drift)</option>
+                                <option value="1000" selected>1000 (Very Stable Population)</option>
+                            </select>
+                        </div>
+
+                        <!-- Natural Selection Coefficient -->
+                        <div>
+                            <div class="flex justify-between text-xs font-bold uppercase text-slate-500 mb-1.5">
+                                <span>Selection Against Recessive (gg)</span>
+                                <span id="sand-sel-label" class="code-font text-cyan-700">0%</span>
+                            </div>
+                            <input type="range" id="sand-sel" min="0" max="0.8" step="0.1" value="0" class="w-full accent-cyan-600 h-1.5 bg-slate-200 rounded-lg">
+                            <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                                <span>No Selection (HW)</span>
+                                <span>Strong Selection</span>
+                            </div>
+                        </div>
+
+                        <button onclick="runSimulation()" class="w-full py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-sm font-bold tracking-wide transition-all shadow-md">Run Simulation Graph</button>
+                    </div>
+                </div>
+
+                <!-- Simulation Graph output -->
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-900 text-lg">100-Generation Timeline</h3>
+                            <!-- Color Legend -->
+                            <div class="flex gap-2 text-[10px] font-bold">
+                                <span class="flex items-center gap-1 text-emerald-700"><span class="w-2.5 h-2.5 bg-emerald-500 rounded"></span> p (G)</span>
+                                <span class="flex items-center gap-1 text-amber-700"><span class="w-2.5 h-2.5 bg-amber-500 rounded"></span> q (g)</span>
+                            </div>
+                        </div>
+
+                        <!-- Live canvas graph -->
+                        <div class="border border-slate-200 rounded-xl p-2 bg-slate-50 relative">
+                            <canvas id="sim-canvas" class="w-full h-[260px] bg-white rounded-lg shadow-inner"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Insights on result -->
+                    <div id="sim-analysis-box" class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 leading-relaxed">
+                        💡 <strong>Hardy-Weinberg Rule:</strong> Notice that when selection is set to 0% and population size is high, allele frequencies remain almost perfectly flat. That is Hardy-Weinberg equilibrium in action! Turn on natural selection or lower population size to watch micro-evolution disrupt the equilibrium.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs">
+        <p>© 2026 Sandy Beetle Island Virtual Genetics Laboratory. Built with Biology Education Best Practices.</p>
+    </footer>
+
+    <!-- Core Javascript Application Logic -->
+    <script>
+        // Tab system navigation logic
+        function switchTab(tabId) {
+            // Hide all tab content panes
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            // Show active tab pane
+            const activePane = document.getElementById(`content-${tabId}`);
+            activePane.classList.remove('hidden');
+            activePane.classList.add('block');
+
+            // Toggle button highlights
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+            });
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap bg-emerald-50 text-emerald-700 shadow-sm border border-emerald-200/50";
+
+            // Run sandbox simulation once when entering sandbox tab
+            if (tabId === 'sandbox') {
+                setTimeout(runSimulation, 100);
+            }
+        }
+
+        // ==================== TAB 1: THE BASICS HABITAT SIMULATOR ====================
+        const alleleSlider = document.getElementById('allele-slider');
+        const pLabel = document.getElementById('p-label');
+        const qLabel = document.getElementById('q-label');
+        const beetleGrid = document.getElementById('beetle-grid');
+
+        const statGG = document.getElementById('stat-gg');
+        const statGGHetero = document.getElementById('stat-gg_hetero');
+        const statGGRec = document.getElementById('stat-gg_rec');
+
+        function updateHabitat() {
+            const p = parseFloat(alleleSlider.value);
+            const q = 1 - p;
+
+            pLabel.textContent = p.toFixed(2);
+            qLabel.textContent = q.toFixed(2);
+
+            // Genotypes
+            const ggFreq = p * p;
+            const ggHeteroFreq = 2 * p * q;
+            const ggRecFreq = q * q;
+
+            statGG.textContent = `${(ggFreq * 100).toFixed(0)}%`;
+            statGGHetero.textContent = `${(ggHeteroFreq * 100).toFixed(0)}%`;
+            statGGRec.textContent = `${(ggRecFreq * 100).toFixed(0)}%`;
+
+            // Draw N=30 beetles randomly distributed according to calculated frequencies
+            beetleGrid.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const rand = Math.random();
+                let colorClass = 'text-emerald-600'; // GG or Gg
+                let typeLabel = 'GG';
+                if (rand < ggRecFreq) {
+                    colorClass = 'text-amber-500'; // gg
+                    typeLabel = 'gg';
+                } else if (rand < (ggRecFreq + ggHeteroFreq)) {
+                    colorClass = 'text-emerald-500'; // Gg
+                    typeLabel = 'Gg';
+                }
+
+                beetleGrid.innerHTML += `
+                    <div class="group relative flex items-center justify-center p-1 bg-white border border-slate-100 rounded-lg shadow-sm hover:scale-105 transition-transform duration-200 cursor-pointer" title="Genotype: ${typeLabel}">
+                        <svg class="w-8 h-8 ${colorClass}" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2a4 4 0 0 0-4 4v1.07A7.001 7.001 0 0 0 3 14v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a7.001 7.001 0 0 0-5-6.93V6a4 4 0 0 0-4-4zm-2 5V6a2 2 0 1 1 4 0v1h-4zm7 7H7v-1a5 5 0 0 1 10 0v1z"/>
+                            <circle cx="9" cy="11" r="1" class="fill-white"/>
+                            <circle cx="15" cy="11" r="1" class="fill-white"/>
+                        </svg>
+                        <span class="absolute -top-4 bg-slate-800 text-white text-[9px] px-1 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10">${typeLabel}</span>
+                    </div>
+                `;
+            }
+        }
+
+        alleleSlider.addEventListener('input', updateHabitat);
+
+        function answerQuickCheck(isCorrect) {
+            const feedback = document.getElementById('check-feedback');
+            feedback.classList.remove('hidden');
+            if (isCorrect) {
+                feedback.className = "mt-4 p-3 rounded-xl text-sm font-semibold bg-emerald-100 text-emerald-800 text-center";
+                feedback.innerHTML = "🎉 Correct! Because dominant alleles completely mask the recessive trait, green beetles can be GG or Gg. This is why we must always start solving population problems with the gold beetles (gg)!";
+            } else {
+                feedback.className = "mt-4 p-3 rounded-xl text-sm font-semibold bg-rose-100 text-rose-800 text-center";
+                feedback.innerHTML = "❌ Try again. Environmental factors don't change genes here. Hint: Think about dominance in classical genetics!";
+            }
+        }
+
+        // ==================== TAB 2: PUNNETT SQUARE AREA VISUALIZER ====================
+        const punnettSlider = document.getElementById('punnett-slider');
+        const punnettValLabel = document.getElementById('punnett-val-label');
+
+        const boxGG = document.getElementById('box-gg');
+        const boxGQ = document.getElementById('box-gq');
+        const boxQG = document.getElementById('box-qg');
+        const boxQQ = document.getElementById('box-qq');
+
+        const labelGG = document.getElementById('label-gg');
+        const labelGQ = document.getElementById('label-gq');
+        const labelQG = document.getElementById('label-qg');
+        const labelQQ = document.getElementById('label-qq');
+
+        const pTopAxis = document.getElementById('p-top-axis');
+        const qTopAxis = document.getElementById('q-top-axis');
+
+        const eqP2 = document.getElementById('eq-p2');
+        const eq2pq = document.getElementById('eq-2pq');
+        const eqQ2 = document.getElementById('eq-q2');
+
+        function updatePunnettSquare() {
+            const p = parseFloat(punnettSlider.value);
+            const q = 1 - p;
+
+            punnettValLabel.textContent = `p = ${p.toFixed(2)}`;
+
+            // Frequencies
+            const p2Val = p * p;
+            const pqVal = p * q;
+            const q2Val = q * q;
+
+            // Update axis text
+            pTopAxis.style.width = `${p * 100}%`;
+            pTopAxis.textContent = `G (p=${p.toFixed(2)})`;
+            qTopAxis.style.width = `${q * 100}%`;
+            qTopAxis.textContent = `g (q=${q.toFixed(2)})`;
+
+            // Adjust width and height percentages
+            boxGG.style.width = `${p * 100}%`;
+            boxGG.style.height = `${p * 100}%`;
+
+            boxGQ.style.width = `${q * 100}%`;
+            boxGQ.style.height = `${p * 100}%`;
+
+            boxQG.style.width = `${p * 100}%`;
+            boxQG.style.height = `${q * 100}%`;
+
+            boxQQ.style.width = `${q * 100}%`;
+            boxQQ.style.height = `${q * 100}%`;
+
+            // Write labels
+            labelGG.textContent = p2Val.toFixed(3);
+            labelGQ.textContent = pqVal.toFixed(3);
+            labelQG.textContent = pqVal.toFixed(3);
+            labelQQ.textContent = q2Val.toFixed(3);
+
+            // Update summation equations below
+            eqP2.textContent = p2Val.toFixed(3);
+            eq2pq.textContent = (2 * pqVal).toFixed(3);
+            eqQ2.textContent = q2Val.toFixed(3);
+        }
+
+        punnettSlider.addEventListener('input', updatePunnettSquare);
+
+        // ==================== TAB 3: GUIDED WIZARD TUTOR ====================
+        const wizardProgressText = document.getElementById('wizard-progress-text');
+        const wizardProgressBar = document.getElementById('wizard-progress-bar');
+        const wizardFeedback = document.getElementById('wizard-feedback');
+        const wizardFeedbackIcon = document.getElementById('wizard-feedback-icon');
+        const wizardFeedbackTitle = document.getElementById('wizard-feedback-title');
+        const wizardFeedbackDesc = document.getElementById('wizard-feedback-desc');
+
+        function showWizardFeedback(status, title, msg) {
+            wizardFeedback.classList.remove('hidden');
+            if (status === 'success') {
+                wizardFeedback.className = "p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 flex items-start gap-3";
+                wizardFeedbackIcon.textContent = "✅";
+            } else {
+                wizardFeedback.className = "p-4 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 flex items-start gap-3";
+                wizardFeedbackIcon.textContent = "❌";
+            }
+            wizardFeedbackTitle.textContent = title;
+            wizardFeedbackDesc.textContent = msg;
+        }
+
+        function checkWizardStep(step) {
+            if (step === 1) {
+                const ans = parseFloat(document.getElementById('wiz-ans-1').value);
+                if (Math.abs(ans - 0.16) < 0.005) {
+                    showWizardFeedback('success', 'Perfect Calculation!', 'Yes! 80 divided by 500 total rabbits is indeed 0.16. This is the frequency of the homozygous recessive phenotype, which is represented mathematically as q².');
+                    // Proceed to step 2
+                    document.getElementById('wiz-step-2').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('wiz-step-2').classList.add('opacity-100'), 10);
+                    wizardProgressText.textContent = "Step 2 of 4";
+                    wizardProgressBar.style.width = "50%";
+                } else {
+                    showWizardFeedback('error', 'Math Error', 'Double check your calculation. Divide 80 by 500 on your phone or scratchpad.');
+                }
+            } else if (step === 2) {
+                const ans = parseFloat(document.getElementById('wiz-ans-2').value);
+                if (Math.abs(ans - 0.40) < 0.01) {
+                    showWizardFeedback('success', 'Great Job!', 'Indeed, taking the square root of 0.16 leaves us with q = 0.40. You have successfully resolved the allele frequency of the recessive white gene (g)!');
+                    // Proceed to step 3
+                    document.getElementById('wiz-step-3').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('wiz-step-3').classList.add('opacity-100'), 10);
+                    wizardProgressText.textContent = "Step 3 of 4";
+                    wizardProgressBar.style.width = "75%";
+                } else {
+                    showWizardFeedback('error', 'Arithmetic Hint', 'Try entering the square root of 0.16, which is 0.4.');
+                }
+            } else if (step === 3) {
+                const ans = parseFloat(document.getElementById('wiz-ans-3').value);
+                if (Math.abs(ans - 0.60) < 0.01) {
+                    showWizardFeedback('success', 'You Are Flying Now!', 'Exactly! Since p + q = 1, then p must be 1.0 - 0.4 = 0.60. We now know both allele speeds! G = 0.60 and g = 0.40.');
+                    // Proceed to step 4
+                    document.getElementById('wiz-step-4').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('wiz-step-4').classList.add('opacity-100'), 10);
+                    wizardProgressText.textContent = "Step 4 of 4";
+                    wizardProgressBar.style.width = "100%";
+                } else {
+                    showWizardFeedback('error', 'Hint', 'If p + 0.4 = 1, then subtract 0.4 from 1 to solve for p.');
+                }
+            } else if (step === 4) {
+                const ans = parseInt(document.getElementById('wiz-ans-4').value);
+                if (ans === 240) {
+                    showWizardFeedback('success', 'Masterpiece Achievement!', 'Bingo! 2pq is 2 * (0.60) * (0.40) = 0.48. Multiplying that probability by 500 rabbits yields exactly 240 heterozygous black rabbits! You just successfully completed a college exam question.');
+                } else {
+                    showWizardFeedback('error', 'Wait, Let\'s Recalculate!', 'Let\'s break down the formula: Heterozygotes frequency (2pq) is 2 * 0.60 * 0.40 = 0.48. Now multiply 0.48 by the total 500 rabbits.');
+                }
+            }
+        }
+
+        // ==================== TAB 4: INTERACTIVE AUTO-SOLVER ====================
+        function toggleSolverInput() {
+            const type = document.getElementById('sol-type').value;
+            const label = document.getElementById('sol-input-label');
+            if (type === 'q2') label.textContent = 'Enter Value for q² (Recessive phenotype frequency, e.g. 0.16)';
+            else if (type === 'q') label.textContent = 'Enter Value for q (Recessive allele frequency, e.g. 0.40)';
+            else if (type === 'p') label.textContent = 'Enter Value for p (Dominant allele frequency, e.g. 0.60)';
+            else if (type === 'p2') label.textContent = 'Enter Value for p² (Homozygous Dominant frequency, e.g. 0.36)';
+            else if (type === 'count_rec') label.textContent = 'Enter Count of Recessive Individuals (e.g. 16)';
+        }
+
+        function calculateSolve() {
+            const pop = parseInt(document.getElementById('sol-pop').value) || 100;
+            const type = document.getElementById('sol-type').value;
+            const val = parseFloat(document.getElementById('sol-input-val').value);
+
+            let p = 0, q = 0, p2 = 0, q2 = 0, pq2 = 0;
+            let steps = [];
+
+            if (isNaN(val) || val < 0) {
+                alert("Please enter a valid positive value.");
+                return;
+            }
+
+            steps.push(`<strong>Starting setup:</strong> Population Size ($N$) = ${pop}.`);
+
+            switch (type) {
+                case 'q2':
+                    if (val > 1.0) {
+                        alert("Frequencies must be between 0.0 and 1.0");
+                        return;
+                    }
+                    q2 = val;
+                    q = Math.sqrt(q2);
+                    p = 1 - q;
+                    steps.push(`1. We are given the recessive phenotype frequency ($q^2$) directly: <strong>q² = ${q2.toFixed(4)}</strong>.`);
+                    steps.push(`2. Take the square root of $q^2$ to find recessive allele frequency ($q$): <br><span class="font-bold code-font text-violet-800">q = √${q2.toFixed(4)} = ${q.toFixed(4)}</span>.`);
+                    steps.push(`3. Solve for $p$ using the rule $p + q = 1$: <br><span class="font-bold code-font text-violet-800">p = 1 - ${q.toFixed(4)} = ${p.toFixed(4)}</span>.`);
+                    break;
+
+                case 'q':
+                    if (val > 1.0) {
+                        alert("Allele frequency cannot exceed 1.0");
+                        return;
+                    }
+                    q = val;
+                    p = 1 - q;
+                    q2 = q * q;
+                    steps.push(`1. We are given the recessive allele frequency ($q$) directly: <strong>q = ${q.toFixed(4)}</strong>.`);
+                    steps.push(`2. Solve for $p$ using the rule $p = 1 - q$: <br><span class="font-bold code-font text-violet-800">p = 1 - ${q.toFixed(4)} = ${p.toFixed(4)}</span>.`);
+                    steps.push(`3. Square $q$ to find recessive individual frequency ($q^2$): <br><span class="font-bold code-font text-violet-800">q² = ${q.toFixed(4)}² = ${q2.toFixed(4)}</span>.`);
+                    break;
+
+                case 'p':
+                    if (val > 1.0) {
+                        alert("Allele frequency cannot exceed 1.0");
+                        return;
+                    }
+                    p = val;
+                    q = 1 - p;
+                    q2 = q * q;
+                    steps.push(`1. We are given the dominant allele frequency ($p$) directly: <strong>p = ${p.toFixed(4)}</strong>.`);
+                    steps.push(`2. Solve for $q$ using the rule $q = 1 - p$: <br><span class="font-bold code-font text-violet-800">q = 1 - ${p.toFixed(4)} = ${q.toFixed(4)}</span>.`);
+                    steps.push(`3. Square $q$ to find recessive individual frequency ($q^2$): <br><span class="font-bold code-font text-violet-800">q² = ${q.toFixed(4)}² = ${q2.toFixed(4)}</span>.`);
+                    break;
+
+                case 'p2':
+                    if (val > 1.0) {
+                        alert("Frequencies must be between 0.0 and 1.0");
+                        return;
+                    }
+                    p2 = val;
+                    p = Math.sqrt(p2);
+                    q = 1 - p;
+                    q2 = q * q;
+                    steps.push(`1. We are given the homozygous dominant frequency ($p^2$): <strong>p² = ${p2.toFixed(4)}</strong>.`);
+                    steps.push(`2. Take the square root of $p^2$ to find the dominant allele frequency ($p$): <br><span class="font-bold code-font text-violet-800">p = √${p2.toFixed(4)} = ${p.toFixed(4)}</span>.`);
+                    steps.push(`3. Solve for recessive allele frequency ($q$) using $q = 1 - p$: <br><span class="font-bold code-font text-violet-800">q = 1 - ${p.toFixed(4)} = ${q.toFixed(4)}</span>.`);
+                    steps.push(`4. Square $q$ to find the recessive genotype frequency ($q^2$): <br><span class="font-bold code-font text-violet-800">q² = ${q.toFixed(4)}² = ${q2.toFixed(4)}</span>.`);
+                    break;
+
+                case 'count_rec':
+                    if (val > pop) {
+                        alert("Recessive individual count cannot exceed the total population.");
+                        return;
+                    }
+                    q2 = val / pop;
+                    q = Math.sqrt(q2);
+                    p = 1 - q;
+                    steps.push(`1. Calculate $q^2$ from the raw count: <strong>q² = ${val} / ${pop} = ${q2.toFixed(4)}</strong>.`);
+                    steps.push(`2. Take the square root of $q^2$ to find recessive allele ($q$): <br><span class="font-bold code-font text-violet-800">q = √${q2.toFixed(4)} = ${q.toFixed(4)}</span>.`);
+                    steps.push(`3. Solve for $p$ using $p = 1 - q$: <br><span class="font-bold code-font text-violet-800">p = 1 - ${q.toFixed(4)} = ${p.toFixed(4)}</span>.`);
+                    break;
+            }
+
+            // Common steps remaining
+            p2 = p * p;
+            pq2 = 2 * p * q;
+            q2 = q * q;
+
+            steps.push(`4. Calculate Homozygous Dominant Genotype ($p^2$): <br><span class="font-bold code-font text-violet-800">p² = ${p.toFixed(4)}² = ${p2.toFixed(4)}</span>.`);
+            steps.push(`5. Calculate Heterozygous Genotype ($2pq$): <br><span class="font-bold code-font text-violet-800">2pq = 2 × ${p.toFixed(4)} × ${q.toFixed(4)} = ${pq2.toFixed(4)}</span>.`);
+            steps.push(`6. Multiply genotypes by total population size ($N = ${pop}$) to get absolute individual counts.`);
+
+            // Display values in the analytical fields
+            document.getElementById('sol-res-p').textContent = p.toFixed(4);
+            document.getElementById('sol-res-q').textContent = q.toFixed(4);
+            document.getElementById('sol-res-p2').textContent = p2.toFixed(4);
+            document.getElementById('sol-res-2pq').textContent = pq2.toFixed(4);
+            document.getElementById('sol-res-q2').textContent = q2.toFixed(4);
+
+            document.getElementById('sol-out-pop-count').textContent = pop;
+            document.getElementById('sol-count-gg').textContent = Math.round(p2 * pop);
+            document.getElementById('sol-count-2pq').textContent = Math.round(pq2 * pop);
+            document.getElementById('sol-count-gg-rec').textContent = Math.round(q2 * pop);
+
+            // Print step-by-step log
+            const container = document.getElementById('sol-steps-container');
+            container.innerHTML = steps.map((step, idx) => `
+                <div class="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm border border-slate-100">
+                    <span class="bg-violet-100 text-violet-800 font-bold text-xs px-2 py-0.5 rounded-full mt-0.5">${idx+1}</span>
+                    <p class="text-xs text-slate-600 leading-relaxed">${step}</p>
+                </div>
+            `).join('');
+        }
+
+        // ==================== TAB 5: PRACTICE EXAM QUIZ ====================
+        const quizQuestions = [
+            {
+                text: "In a wild habitat of 1,000 panthers, 90 panthers have black fur (recessive genotype gg). Under Hardy-Weinberg equilibrium, what is the recessive allele frequency (q)?",
+                options: [
+                    { text: "q = 0.09", correct: false },
+                    { text: "q = 0.30", correct: true },
+                    { text: "q = 0.70", correct: false },
+                    { text: "q = 0.03", correct: false }
+                ],
+                explanation: "The percentage of recessive black panthers (gg) represents q². Since 90 out of 1000 is 0.09, q² = 0.09. Take the square root to find q: √0.09 = 0.30."
+            },
+            {
+                text: "If the frequency of the dominant allele p is 0.8, what percentage of the population is expected to be heterozygous (2pq)?",
+                options: [
+                    { text: "16%", correct: false },
+                    { text: "64%", correct: false },
+                    { text: "32%", correct: true },
+                    { text: "4%", correct: false }
+                ],
+                explanation: "First, find q using p + q = 1: q = 1 - 0.8 = 0.2. Then calculate 2pq: 2 * 0.8 * 0.2 = 0.32 or 32%."
+            },
+            {
+                text: "A genetic study identifies that 16% of students have blue eyes (recessive). Under Hardy-Weinberg conditions, what is the frequency of the homozygous dominant genotype (p²)?",
+                options: [
+                    { text: "p² = 0.36", correct: true },
+                    { text: "p² = 0.84", correct: false },
+                    { text: "p² = 0.64", correct: false },
+                    { text: "p² = 0.48", correct: false }
+                ],
+                explanation: "We are given q² = 0.16 (blue-eyed). Taking the square root gives q = 0.4. Since p = 1 - q, p = 0.6. Squaring p yields p² = 0.36."
+            },
+            {
+                text: "A remote valley has 400 wildflowers. 384 are Red (Dominant) and 16 are White (Recessive). How many Red wildflowers are expected to be heterozygous carriers of the white gene?",
+                options: [
+                    { text: "128 wildflowers", correct: false },
+                    { text: "160 wildflowers", correct: true },
+                    { text: "320 wildflowers", correct: false },
+                    { text: "80 wildflowers", correct: false }
+                ],
+                explanation: "1. Start with white (q²): 16 / 400 = 0.04. 2. Find q: √0.04 = 0.20. 3. Find p: 1 - 0.20 = 0.80. 4. Find heterozygous frequency (2pq): 2 * 0.8 * 0.2 = 0.32. 5. Find count: 0.32 * 400 = 160."
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = quizQuestions[currentQuestionIdx];
+            document.getElementById('quiz-q-num').textContent = `Question ${currentQuestionIdx + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-q-text').textContent = q.text;
+
+            const container = document.getElementById('quiz-options-container');
+            container.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                container.innerHTML += `
+                    <button onclick="submitQuizAnswer(${idx})" class="quiz-opt-btn w-full text-left p-4 rounded-xl border border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all font-semibold text-slate-700 text-sm flex justify-between items-center">
+                        <span>${opt.text}</span>
+                        <span class="check-indicator hidden text-lg"></span>
+                    </button>
+                `;
+            });
+
+            // Hide explanation panel & next button
+            document.getElementById('quiz-explanation-box').classList.add('hidden');
+            document.getElementById('quiz-next-btn').setAttribute('disabled', 'true');
+        }
+
+        function submitQuizAnswer(idx) {
+            const q = quizQuestions[currentQuestionIdx];
+            const buttons = document.querySelectorAll('.quiz-opt-btn');
+            
+            // Disable all options
+            buttons.forEach(btn => btn.setAttribute('disabled', 'true'));
+
+            const selectedBtn = buttons[idx];
+            const indicators = document.querySelectorAll('.check-indicator');
+
+            const isCorrect = q.options[idx].correct;
+            if (isCorrect) {
+                selectedBtn.className = "quiz-opt-btn w-full text-left p-4 rounded-xl border border-emerald-500 bg-emerald-50 font-semibold text-emerald-800 text-sm flex justify-between items-center";
+                indicators[idx].textContent = "✓ Correct";
+                indicators[idx].classList.remove('hidden');
+                score++;
+                document.getElementById('quiz-score').textContent = `${score} / ${quizQuestions.length}`;
+                
+                document.getElementById('quiz-exp-title').textContent = "Excellent Explanation!";
+                document.getElementById('quiz-exp-icon').textContent = "🎉";
+            } else {
+                selectedBtn.className = "quiz-opt-btn w-full text-left p-4 rounded-xl border border-rose-500 bg-rose-50 font-semibold text-rose-800 text-sm flex justify-between items-center";
+                indicators[idx].textContent = "✗ Incorrect";
+                indicators[idx].classList.remove('hidden');
+                
+                // Show the correct one
+                const correctIdx = q.options.findIndex(o => o.correct);
+                buttons[correctIdx].className = "quiz-opt-btn w-full text-left p-4 rounded-xl border border-emerald-500 bg-emerald-50/50 font-semibold text-emerald-800 text-sm flex justify-between items-center";
+
+                document.getElementById('quiz-exp-title').textContent = "Academic Explanation & Concept Review";
+                document.getElementById('quiz-exp-icon').textContent = "💡";
+            }
+
+            // Display explanation text
+            document.getElementById('quiz-explanation-box').classList.remove('hidden');
+            document.getElementById('quiz-exp-body').textContent = q.explanation;
+
+            // Enable next button
+            document.getElementById('quiz-next-btn').removeAttribute('disabled');
+        }
+
+        function nextQuizQuestion() {
+            if (currentQuestionIdx < quizQuestions.length - 1) {
+                currentQuestionIdx++;
+                loadQuestion();
+            } else {
+                // Quiz completed modal effect or status
+                const container = document.getElementById('quiz-options-container');
+                container.innerHTML = `
+                    <div class="text-center py-8 space-y-4">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-800 text-3xl font-black">
+                            🏆
+                        </div>
+                        <h4 class="text-xl font-bold text-slate-800">Quiz Completed!</h4>
+                        <p class="text-sm text-slate-500">You scored ${score} out of ${quizQuestions.length} correct answers.</p>
+                        <button onclick="resetQuiz()" class="px-5 py-2.5 bg-slate-800 text-white rounded-lg text-sm font-bold shadow hover:bg-slate-700 transition-colors">Start Over</button>
+                    </div>
+                `;
+                document.getElementById('quiz-explanation-box').classList.add('hidden');
+                document.getElementById('quiz-next-btn').setAttribute('disabled', 'true');
+            }
+        }
+
+        function resetQuiz() {
+            currentQuestionIdx = 0;
+            score = 0;
+            document.getElementById('quiz-score').textContent = `0 / ${quizQuestions.length}`;
+            loadQuestion();
+        }
+
+        // ==================== TAB 6: MICRO-EVOLUTION SIMULATOR ====================
+        function runSimulation() {
+            const canvas = document.getElementById('sim-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set dynamic rendering dimensions
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = canvas.parentElement.clientWidth * dpr;
+            canvas.height = 260 * dpr;
+            ctx.scale(dpr, dpr);
+
+            const width = canvas.width / dpr;
+            const height = 260;
+
+            // Retrieve configuration parameters
+            const initP = parseFloat(document.getElementById('sand-p').value);
+            const popSize = parseInt(document.getElementById('sand-pop').value);
+            const selection = parseFloat(document.getElementById('sand-sel').value);
+
+            // Update UI labels
+            document.getElementById('sand-p-label').textContent = initP.toFixed(2);
+            document.getElementById('sand-pop-label').textContent = popSize;
+            document.getElementById('sand-sel-label').textContent = `${(selection * 100).toFixed(0)}%`;
+
+            // Run evolution mathematics over 100 generations
+            let generations = [];
+            let pFreqs = [];
+            let qFreqs = [];
+
+            let pCurrent = initP;
+
+            for (let gen = 0; gen <= 100; gen++) {
+                let qCurrent = 1 - pCurrent;
+
+                // 1. Natural Selection (decrease fitness of homozygous recessive 'gg')
+                let w_GG = 1.0;
+                let w_Gg = 1.0;
+                let w_gg = 1.0 - selection;
+
+                // Mean fitness
+                let meanFitness = (pCurrent*pCurrent * w_GG) + (2*pCurrent*qCurrent * w_Gg) + (qCurrent*qCurrent * w_gg);
+
+                // Frequencies after selection
+                let pSelected = ((pCurrent*pCurrent * w_GG) + (pCurrent*qCurrent * w_Gg)) / meanFitness;
+
+                // 2. Genetic Drift (Simulating finite population using binomial sampling approximation)
+                // We draw from the gene pool of size 2 * popSize
+                let pNext = pSelected;
+                if (popSize < 10000) {
+                    let successCount = 0;
+                    for (let d = 0; d < 2 * popSize; d++) {
+                        if (Math.random() < pSelected) successCount++;
+                    }
+                    pNext = successCount / (2 * popSize);
+                }
+
+                pFreqs.push(pNext);
+                qFreqs.push(1 - pNext);
+                pCurrent = pNext;
+            }
+
+            // Draw line graph
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw grid lines
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < 5; i++) {
+                let y = (height / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            // Draw P lines (Green)
+            ctx.strokeStyle = '#10b981'; // Emerald-500
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(0, height - (pFreqs[0] * (height - 40)) - 20);
+            for (let x = 1; x <= 100; x++) {
+                let px = (width / 100) * x;
+                let py = height - (pFreqs[x] * (height - 40)) - 20;
+                ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+
+            // Draw Q lines (Amber)
+            ctx.strokeStyle = '#f59e0b'; // Amber-500
+            ctx.beginPath();
+            ctx.moveTo(0, height - (qFreqs[0] * (height - 40)) - 20);
+            for (let x = 1; x <= 100; x++) {
+                let px = (width / 100) * x;
+                let py = height - (qFreqs[x] * (height - 40)) - 20;
+                ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+
+            // Write analytical narrative
+            const analysisBox = document.getElementById('sim-analysis-box');
+            if (selection > 0) {
+                analysisBox.innerHTML = `🔬 <strong>Simulation Insight:</strong> Because you applied natural selection against the recessive phenotype (gg), the recessive allele ($q$) decreases steadily. Meanwhile, the dominant allele ($p$) takes over the island. This is micro-evolution breaking the Hardy-Weinberg equilibrium!`;
+            } else if (popSize <= 50) {
+                analysisBox.innerHTML = `🔬 <strong>Simulation Insight:</strong> With a tiny population size (N=50), the allele lines bounce around dramatically due to <strong>Genetic Drift</strong> (random chance). This shows how smaller environments are highly susceptible to losing entire genes!`;
+            } else {
+                analysisBox.innerHTML = `🔬 <strong>Simulation Insight:</strong> With zero selection and a massive population size, the lines are beautifully stable and horizontal. This demonstrates ideal <strong>Hardy-Weinberg Equilibrium</strong>.`;
+            }
+        }
+
+        // Add real-time interactive adjustments to the sandbox controls
+        document.getElementById('sand-p').addEventListener('input', runSimulation);
+        document.getElementById('sand-pop').addEventListener('change', runSimulation);
+        document.getElementById('sand-sel').addEventListener('input', runSimulation);
+
+        // Window load sequences
+        window.onload = function() {
+            updateHabitat();
+            updatePunnettSquare();
+            loadQuestion();
+            toggleSolverInput();
+        }
+    </script>
+</body>
+</html>
