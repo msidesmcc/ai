@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor Mary Sides | McLennan Community College</title>
+    <style>
+        /* Embedded CSS styling */
+        :root {
+            --primary-color: #0b3c5d; /* Classic academic blue */
+            --secondary-color: #328cc1;
+            --text-color: #1d2731;
+            --bg-color: #f9f9f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid var(--secondary-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .welcome-box {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .welcome-box h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid #ddd;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mary Sides</h1>
+        <p>Professor | McLennan Community College</p>
+    </header>
+
+    <div class="container">
+        <section class="welcome-box">
+            <h2 id="dynamic-greeting">Welcome</h2>
+            <p>Welcome to my academic homepage. Here you can find information regarding my courses, research interests, and institutional responsibilities at McLennan Community College.</p>
+        </section>
+
+        <section>
+            <h3>Course Directory</h3>
+            <p>Explore resources, lecture notes, and syllabus details for my biology courses:</p>
+            
+            <div class="nav-links">
+                <a href="biology.html" class="btn">View Biology Course Pages &rarr;</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Mary Sides | McLennan Community College</p>
+    </footer>
+
+    <script>
+        // Embedded JavaScript to customize greeting based on time of day
+        document.addEventListener('DOMContentLoaded', function() {
+            const greetingElement = document.getElementById('dynamic-greeting');
+            const currentHour = new Date().getHours();
+            let greeting = "Welcome";
+
+            if (currentHour < 12) {
+                greeting = "Good Morning, Welcome!";
+            } else if (currentHour < 18) {
+                greeting = "Good Afternoon, Welcome!";
+            } else {
+                greeting = "Good Evening, Welcome!";
+            }
+
+            greetingElement.textContent = greeting;
+        });
+    </script>
+
+</body>
+</html>
