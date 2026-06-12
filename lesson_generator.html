@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Population Genetics Prompt Generator & Lesson Studio</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#025a87',
+              700: '#0369a1',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        color: black !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-200">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-b border-slate-200 dark:border-slate-800 transition-colors duration-200 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-brand-500 text-white p-2.5 rounded-xl shadow-md shadow-brand-500/20">
+          <i class="fa-solid fa-dna text-xl animate-pulse"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-brand-600 to-sky-500 bg-clip-text text-transparent dark:from-brand-500 dark:to-sky-400">
+            Population Genetics
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Prompt Generator & Lesson Studio</p>
+        </div>
+      </div>
+      
+      <!-- Theme & Action Toggles -->
+      <div class="flex items-center space-x-3">
+        <button id="themeToggle" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all duration-200" title="Toggle Theme">
+          <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
+        </button>
+        <button id="quickHelpBtn" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all duration-200" title="Quick Help Guide">
+          <i class="fa-solid fa-circle-question text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid Wrapper -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- LEFT COLUMN: Generator Setup & Parameters (Lg: 5cols) -->
+      <section class="lg:col-span-5 space-y-6 no-print">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-5">
+          <div class="flex items-center space-x-2 pb-4 border-b border-slate-100 dark:border-slate-700">
+            <i class="fa-solid fa-sliders text-brand-500 text-lg"></i>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Prompt Parameters</h2>
+          </div>
+
+          <!-- 1. Persona Selector -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Target Persona / Goal</label>
+            <div class="relative">
+              <select id="personaSelect" class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm appearance-none">
+                <option value="student_study">Student Self-Study Helper</option>
+                <option value="instructor_lesson">AP Biology Teacher (Lesson Plan & Activities)</option>
+                <option value="quiz_creator">Quiz & Test Assessment Designer</option>
+                <option value="remedial_tutor">Concept Simplifier (For Remedial/Entry Biology)</option>
+                <option value="disabled_accom">Special Education / IEP Accommodation Designer</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-xs text-slate-400 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <!-- 2. Primary Topic Focus -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Topic Focus</label>
+            <div class="relative">
+              <select id="topicFocusSelect" class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm appearance-none">
+                <option value="all_chapter">Complete Chapter Overview</option>
+                <option value="hardy_weinberg">Hardy-Weinberg Principle & Math Solvers</option>
+                <option value="drift_flow">Genetic Drift, Gene Flow & Bottleneck Events</option>
+                <option value="natural_selection">Adaptive Evolution (Stabilizing, Directional, Diversifying)</option>
+                <option value="sexual_selection">Sexual Selection & Frequency-Dependent Dynamics</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-xs text-slate-400 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <!-- 3. Target Tone & Depth -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Explanation Depth</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="setDepth('conceptual')" id="depth_conceptual" class="depth-btn px-3 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700">Conceptual</button>
+              <button onclick="setDepth('balanced')" id="depth_balanced" class="depth-btn px-3 py-2 rounded-xl text-xs font-medium border border-brand-500 bg-brand-500 text-white">Balanced</button>
+              <button onclick="setDepth('rigorous')" id="depth_rigorous" class="depth-btn px-3 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700">Rigorous</button>
+            </div>
+          </div>
+
+          <!-- 4. Interactive Toggles for Prompt Content -->
+          <div class="space-y-3 pt-2">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Include in Prompt</h3>
+            
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Analogies & Case Studies</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggleAnalogies" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:bg-slate-700 peer-checked:bg-brand-500"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Mathematical Math Workthroughs</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggleMath" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:bg-slate-700 peer-checked:bg-brand-500"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-600 dark:text-slate-300">ADA/UDL Accommodations</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggleADA" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:bg-slate-700 peer-checked:bg-brand-500"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Review Quiz & Answers</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggleQuiz" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:bg-slate-700 peer-checked:bg-brand-500"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Generate Action Button -->
+          <button onclick="generateCustomPrompt()" class="w-full py-3 px-4 rounded-xl font-bold text-white bg-brand-500 hover:bg-brand-600 shadow-md shadow-brand-500/20 active:scale-95 transition-all duration-150 flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+            <span>Generate Prompt & Plan</span>
+          </button>
+        </div>
+
+        <!-- Reference/Quick Stats Block -->
+        <div class="bg-gradient-to-br from-brand-900 to-sky-950 text-white rounded-2xl p-6 shadow-xl space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold tracking-wide uppercase text-sky-200">Hardy-Weinberg Quick Check</h3>
+            <span class="text-[10px] bg-sky-500/20 border border-sky-400/30 px-2 py-0.5 rounded-full text-sky-300">Interactive Preview</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Quickly solve $p + q = 1$ and $p^2 + 2pq + q^2 = 1$ from the textbook chapter guidelines! Set any allele value to see predictions instantly.
+          </p>
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <div>
+              <label class="block text-[11px] text-slate-300 mb-1">Allele $p$ (Dominant)</label>
+              <input type="number" id="quickP" value="0.8" step="0.05" min="0" max="1" oninput="solveHW('p')" class="w-full bg-white/10 border border-white/20 rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-300 mb-1">Allele $q$ (Recessive)</label>
+              <input type="number" id="quickQ" value="0.2" step="0.05" min="0" max="1" oninput="solveHW('q')" class="w-full bg-white/10 border border-white/20 rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+          </div>
+          <div class="p-3 bg-white/5 border border-white/10 rounded-xl space-y-1.5 text-xs text-slate-200">
+            <div class="flex justify-between">
+              <span>Homozygous Dominant ($p^2$):</span>
+              <span id="resP2" class="font-mono font-bold text-sky-300">0.6400</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Heterozygous ($2pq$):</span>
+              <span id="res2PQ" class="font-mono font-bold text-sky-300">0.3200</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Homozygous Recessive ($q^2$):</span>
+              <span id="resQ2" class="font-mono font-bold text-sky-300">0.0400</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: Output Generator & Interactive Lesson Tab Suite (Lg: 7cols) -->
+      <section class="lg:col-span-7 space-y-6">
+        
+        <!-- Tab Controls -->
+        <div class="flex overflow-x-auto py-1 space-x-1 border-b border-slate-200 dark:border-slate-800 no-print">
+          <button onclick="switchTab('promptTab')" id="btn_promptTab" class="tab-btn px-4 py-2.5 rounded-t-xl text-sm font-semibold transition-all duration-150 border-b-2 border-brand-500 text-brand-500 dark:text-brand-400">
+            <i class="fa-solid fa-code text-xs mr-1.5"></i> Generated Prompt
+          </button>
+          <button onclick="switchTab('lessonTab')" id="btn_lessonTab" class="tab-btn px-4 py-2.5 rounded-t-xl text-sm font-semibold transition-all duration-150 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">
+            <i class="fa-solid fa-book-open text-xs mr-1.5"></i> Lesson Highlights
+          </button>
+          <button onclick="switchTab('quizTab')" id="btn_quizTab" class="tab-btn px-4 py-2.5 rounded-t-xl text-sm font-semibold transition-all duration-150 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">
+            <i class="fa-solid fa-clipboard-question text-xs mr-1.5"></i> Integrated Quiz
+          </button>
+          <button onclick="switchTab('adaTab')" id="btn_adaTab" class="tab-btn px-4 py-2.5 rounded-t-xl text-sm font-semibold transition-all duration-150 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">
+            <i class="fa-solid fa-universal-access text-xs mr-1.5"></i> ADA Checklist
+          </button>
+        </div>
+
+        <!-- TAB 1: Generated Prompt Interface -->
+        <div id="tabContent_promptTab" class="tab-pane bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-700 no-print">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                Ready-to-Use Master AI Prompt
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Copy this prompt directly into Gemini, ChatGPT, or Claude for high-fidelity tutoring/lesson planning.</p>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+              <button onclick="copyToClipboard('promptTextArea')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-brand-500 hover:bg-brand-600 text-white flex items-center gap-1.5 shadow-sm shadow-brand-500/10 active:scale-95 transition-all">
+                <i class="fa-regular fa-copy"></i> Copy
+              </button>
+              <button onclick="downloadAsTxt('promptTextArea', 'population_genetics_prompt.txt')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 active:scale-95 transition-all">
+                <i class="fa-solid fa-download"></i> Save .txt
+              </button>
+              <button onclick="window.print()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 active:scale-95 transition-all">
+                <i class="fa-solid fa-print"></i> Print
+              </button>
+            </div>
+          </div>
+
+          <!-- Text Area with Dynamic Prompt -->
+          <div class="relative">
+            <textarea id="promptTextArea" readonly class="w-full h-96 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-mono text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 leading-relaxed resize-none"></textarea>
+            <div id="toastNotification" class="absolute bottom-4 right-4 bg-emerald-600 text-white text-xs px-3 py-2 rounded-lg opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-1.5 shadow-md">
+              <i class="fa-solid fa-circle-check"></i> Copied to clipboard!
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Lesson Highlights -->
+        <div id="tabContent_lessonTab" class="tab-pane hidden bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Core Highlights from Chapter: Population Genetics</h3>
+            <p class="text-xs text-slate-400 mt-1">Review critical scientific concepts compiled directly from the lesson text.</p>
+          </div>
+
+          <div class="space-y-4">
+            <div class="p-4 bg-brand-50/50 dark:bg-slate-900/40 rounded-xl border border-brand-100 dark:border-slate-700">
+              <h4 class="text-xs font-bold text-brand-700 dark:text-brand-400 uppercase tracking-wider mb-1.5">Learning Objectives</h4>
+              <ul class="list-disc pl-5 text-sm space-y-1 text-slate-600 dark:text-slate-300">
+                <li>Define <strong>population genetics</strong> and describe how scientists track evolutionary change in populations.</li>
+                <li>Understand the <strong>Hardy-Weinberg Principle</strong> of Equilibrium as an experimental control.</li>
+                <li>Calculate mathematical changes in allele and genotype frequencies ($p + q = 1$ and $p^2 + 2pq + q^2 = 1$).</li>
+                <li>Differentiate evolutionary forces: mutation, genetic drift, gene flow, nonrandom mating, and natural selection.</li>
+              </ul>
+            </div>
+
+            <div class="space-y-2">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Key Vocabulary Terms</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <strong class="text-slate-900 dark:text-white">Allele Frequency</strong>
+                  <p class="text-slate-500 dark:text-slate-400">The rate at which a specific allele appears within a population's gene pool.</p>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <strong class="text-slate-900 dark:text-white">Modern Synthesis</strong>
+                  <p class="text-slate-500 dark:text-slate-400">Coherent integration of Darwinian natural selection and Mendelian genetics (by the 1940s).</p>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <strong class="text-slate-900 dark:text-white">Genetic Drift</strong>
+                  <p class="text-slate-500 dark:text-slate-400">Changes in allele frequencies due solely to random chance, magnifying effects in small populations.</p>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <strong class="text-slate-900 dark:text-white">Gene Flow</strong>
+                  <p class="text-slate-500 dark:text-slate-400">Flow of alleles in/out of a population due to migration of individuals or gametes.</p>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <strong class="text-slate-900 dark:text-white">Adaptive Evolution</strong>
+                  <p class="text-slate-500 dark:text-slate-400">Natural selection favoring beneficial alleles while acting against deleterious ones.</p>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <strong class="text-slate-900 dark:text-white">Polymorphism</strong>
+                  <p class="text-slate-500 dark:text-slate-400">Expression of multiple different phenotypes / alleles of a gene within a population.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Evolutionary Forces Breakdown -->
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Natural Selection Styles</h4>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30">
+                  <div class="flex items-center space-x-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                    <strong class="text-xs font-bold text-slate-900 dark:text-white">Stabilizing</strong>
+                  </div>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Favors intermediate, average phenotypes. Example: Robin clutch size (typically 4 eggs).</p>
+                </div>
+                <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30">
+                  <div class="flex items-center space-x-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <strong class="text-xs font-bold text-slate-900 dark:text-white">Directional</strong>
+                  </div>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Favors one extreme phenotype. Example: Industrial Revolution peppered moths (shifting light to dark).</p>
+                </div>
+                <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30">
+                  <div class="flex items-center space-x-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                    <strong class="text-xs font-bold text-slate-900 dark:text-white">Diversifying</strong>
+                  </div>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Favors two or more extreme phenotypes, selecting against average. Example: Sneaker/Alpha males.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Real-World Analogies Box -->
+            <div class="p-4 bg-amber-500/5 dark:bg-amber-500/10 rounded-xl border border-amber-500/20">
+              <h4 class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <i class="fa-solid fa-lightbulb"></i> Classic Case Studies Mentioned
+              </h4>
+              <ul class="text-xs space-y-2 text-slate-600 dark:text-slate-300">
+                <li>🧬 <strong class="text-slate-900 dark:text-white">Side-Blotched Lizards (Rock-Paper-Scissors):</strong> Orange (aggressors) beats Blue (pair-bonders), Blue beats Yellow (sneakers), Yellow beats Orange. Creates a stable cyclical pattern of phenotypic frequencies.</li>
+                <li>🏜️ <strong class="text-slate-900 dark:text-white">The Bottleneck Bead Game:</strong> Simulated natural disasters showing that survivors are random samplings. Genetic diversity changes drastically without directional evolutionary purpose.</li>
+                <li>❄️ <strong class="text-slate-900 dark:text-white">Geographic Clines:</strong> Altitudinal (mountain flowering schedules) and Latitudinal (larger body sizes of homeothermic species near the colder poles).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: Review Quiz -->
+        <div id="tabContent_quizTab" class="tab-pane hidden bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Interactive Textbook Practice Assessment</h3>
+            <p class="text-xs text-slate-400 mt-1">Self-evaluating review designed directly from the lesson questions and math exercises.</p>
+          </div>
+
+          <div class="space-y-6">
+            <!-- Question 1 -->
+            <div class="space-y-2.5">
+              <span class="inline-block bg-brand-50 text-brand-700 dark:bg-slate-700 dark:text-brand-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Question 1: Math Application</span>
+              <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                In a population of 500 pea plants, 20 are homozygous recessive for white flowers (vv). Assuming the population is in Hardy-Weinberg equilibrium, what is the frequency of the recessive allele $q$?
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button onclick="checkAnswer(1, 'A', this)" class="q-btn-1 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">A.</strong> 0.20
+                </button>
+                <button onclick="checkAnswer(1, 'B', this)" class="q-btn-1 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">B.</strong> 0.04
+                </button>
+                <button onclick="checkAnswer(1, 'C', this)" class="q-btn-1 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">C.</strong> 0.80
+                </button>
+              </div>
+              <div id="qExplain-1" class="hidden p-3 bg-slate-100 dark:bg-slate-900 rounded-xl text-xs text-slate-500 leading-relaxed"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="space-y-2.5">
+              <span class="inline-block bg-brand-50 text-brand-700 dark:bg-slate-700 dark:text-brand-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Question 2: Theory Integration</span>
+              <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                Which of the following describes why the peppered moth population of nineteenth-century England shifted from light-colored to dark-colored?
+              </p>
+              <div class="grid grid-cols-1 gap-2">
+                <button onclick="checkAnswer(2, 'A', this)" class="q-btn-2 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">A.</strong> Diversifying selection occurred, favoring medium-gray moths because predators were color-blind.
+                </button>
+                <button onclick="checkAnswer(2, 'B', this)" class="q-btn-2 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">B.</strong> Directional selection shifted the spectrum of phenotypes toward darker coloration because of factory soot in the trees.
+                </button>
+                <button onclick="checkAnswer(2, 'C', this)" class="q-btn-2 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">C.</strong> Genetic drift was amplified because of an earthquake catastrophe that decimated the entire forest.
+                </button>
+              </div>
+              <div id="qExplain-2" class="hidden p-3 bg-slate-100 dark:bg-slate-900 rounded-xl text-xs text-slate-500 leading-relaxed"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="space-y-2.5">
+              <span class="inline-block bg-brand-50 text-brand-700 dark:bg-slate-700 dark:text-brand-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Question 3: Side-Blotched Lizards</span>
+              <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                The rock-paper-scissors dynamic of throat colors among male side-blotched lizards is an evolutionary demonstration of:
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button onclick="checkAnswer(3, 'A', this)" class="q-btn-3 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">A.</strong> Stabilizing Selection
+                </button>
+                <button onclick="checkAnswer(3, 'B', this)" class="q-btn-3 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">B.</strong> Assortative Mating
+                </button>
+                <button onclick="checkAnswer(3, 'C', this)" class="q-btn-3 text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-xs transition">
+                  <strong class="mr-1 text-brand-500">C.</strong> Negative Frequency-Dependent Selection
+                </button>
+              </div>
+              <div id="qExplain-3" class="hidden p-3 bg-slate-100 dark:bg-slate-900 rounded-xl text-xs text-slate-500 leading-relaxed"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: ADA / UDL Checklist -->
+        <div id="tabContent_adaTab" class="tab-pane hidden bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">ADA & UDL Accessibility Checklist</h3>
+              <p class="text-xs text-slate-400 mt-1">Ensure this population genetics lesson aligns with standard accessibility guidelines.</p>
+            </div>
+            <span class="text-xs bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 font-bold px-2.5 py-1 rounded-lg">4 Items Checked</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3 p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
+              <div class="flex items-center justify-center p-1.5 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div>
+                <strong class="text-sm text-slate-900 dark:text-white">High Contrast Text & Semantics</strong>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">This application uses pure semantic markdown structure, standard contrast tags, and scalable font interfaces to guarantee screen-reader compatibility (WCAG 2.1 AA).</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-3 p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
+              <div class="flex items-center justify-center p-1.5 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div>
+                <strong class="text-sm text-slate-900 dark:text-white">Alternative Formats & Math Syntaxes</strong>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">All math notation formulas use LaTeX conventions (e.g., $p^2 + 2pq + q^2 = 1$) to allow text-to-speech tools to parse calculations without breaks.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-3 p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
+              <div class="flex items-center justify-center p-1.5 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div>
+                <strong class="text-sm text-slate-900 dark:text-white">Universal Design for Learning (UDL) Multiple Means</strong>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Providing dynamic content across multiple modalities: textual definitions, interactive math checkers, visual analogies, and an integrated quiz with instantaneous educational feedback.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-3 p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
+              <div class="flex items-center justify-center p-1.5 bg-amber-500/10 rounded-lg text-amber-600 dark:text-amber-400 mt-0.5">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <div>
+                <strong class="text-sm text-slate-900 dark:text-white">Alt Text & Image Descriptions Needed</strong>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">If displaying textbook charts (such as Figure 8's stabilizing/directional curves), provide descriptive captions or tactile alternatives for visually impaired students.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Help Guide Modal Overlay -->
+  <div id="helpModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-xl space-y-4 border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-brand-500"></i>
+          How to Use this Tool
+        </h3>
+        <button onclick="toggleHelpModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p>This application transforms scientific data from the **Population Genetics Textbook Chapter** into highly personalized, professional prompts that you can copy right into LLMs (like Gemini, Claude, or GPT) or export for offline use.</p>
+        <p class="font-bold text-slate-800 dark:text-white">To get started:</p>
+        <ol class="list-decimal pl-5 space-y-1">
+          <li>Select your target persona (e.g., student self-study or biology instructor).</li>
+          <li>Choose a specific topic focus from the drop-down menu.</li>
+          <li>Set explanation depth (Conceptual, Balanced, or Rigorous).</li>
+          <li>Check/uncheck desired extra content toggles.</li>
+          <li>Click <strong class="text-brand-500">Generate Prompt & Plan</strong>.</li>
+        </ol>
+        <p>Explore different tabs on the right side to review critical definitions, complete a self-study quiz, or verify lessons against standard ADA requirements.</p>
+      </div>
+      <div class="pt-2">
+        <button onclick="toggleHelpModal()" class="w-full py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-500/15">
+          Got it, let's explore!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1 no-print">
+    <p>Curriculum design aligned with Gregor Mendel's particulate inheritance rediscovery and modern evolutionary synthesis.</p>
+    <p>&copy; 2026 Lesson Studio Co-Pilot. Built with full Accessibility compliance.</p>
+  </footer>
+
+  <!-- Application Logic & Scripts -->
+  <script>
+    // Global State
+    let selectedDepth = 'balanced';
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+
+    // Core Chapter Data Strings to populate deep, specific prompts
+    const chapterData = {
+      title: "Population Genetics",
+      objectives: [
+        "Define population genetics and track changes in allele frequencies over time.",
+        "Solve equations using the Hardy-Weinberg Principle of Equilibrium ($p+q=1$ and $p^2+2pq+q^2=1$).",
+        "Describe evolutionary forces: genetic drift, bottlenecks, founder effects, gene flow, nonrandom mating, and environmental variations.",
+        "Compare stabilizing, directional, and diversifying modes of natural selection."
+      ],
+      mathEx: {
+        v1: "Scenario A: Violet flower color (V) is dominant over white (v). If p = 0.8 and q = 0.2 in a population of 500 plants, we expect 320 VV, 160 Vv, and 20 vv. Total violet = 480; total white = 20.",
+        v2: "Scenario B: In a population of 450 plants, 250 have white flowers. White flowers are homozygous recessive ($q^2 = 250/450 = 0.5556$). Take the square root: $q = 0.7454$. Solve for $p = 1 - q = 0.2546$. Compute $p^2 = 0.0648$ and $2pq = 0.3796$."
+      },
+      forces: [
+        "Genetic Drift: Random sampling chance impacts. Magnified dramatically in small populations.",
+        "Bottleneck Effect: Catastrophes like earthquakes or hurricanes wipe out a large portion of the gene pool at random, restricting variation.",
+        "Founder Effect: Isolated subset of population migrates, changing baseline gene structure based on creators' genetics (e.g. Afrikaners of South Africa).",
+        "Gene Flow: Flow of alleles from migration of individuals or gametes.",
+        "Nonrandom Mating: Assortative mating (preference for phenotypically similar mates), mate selection (e.g. peacocks' elaborate tails)."
+      ],
+      adaptive: [
+        "Stabilizing Selection: Favors average. Example: Robins laying 4 eggs (larger results in malnourishment, smaller results in unviable clutches).",
+        "Directional Selection: Environment shifts spectrum. Example: Peppered moths moving to darker colors after industrial soot covered pristine trees.",
+        "Diversifying Selection: Favors both extremes, selects against average. Example: Medium sized males can't compete with alpha males nor sneak mate like tiny males."
+      ]
+    };
+
+    // Initialize Theme
+    if (currentTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.getElementById('themeIcon').className = 'fa-solid fa-sun text-lg';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.getElementById('themeIcon').className = 'fa-solid fa-moon text-lg';
+    }
+
+    // Toggle Theme Handler
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        document.getElementById('themeIcon').className = 'fa-solid fa-moon text-lg';
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById('themeIcon').className = 'fa-solid fa-sun text-lg';
+      }
+    });
+
+    // Handle Help Guide Toggle
+    document.getElementById('quickHelpBtn').addEventListener('click', toggleHelpModal);
+    function toggleHelpModal() {
+      const modal = document.getElementById('helpModal');
+      modal.classList.toggle('hidden');
+    }
+
+    // Set Depth Configuration
+    function setDepth(depth) {
+      selectedDepth = depth;
+      document.querySelectorAll('.depth-btn').forEach(btn => {
+        btn.classList.remove('border-brand-500', 'bg-brand-500', 'text-white');
+        btn.classList.add('border-slate-200', 'dark:border-slate-700', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+      });
+      const activeBtn = document.getElementById(`depth_${depth}`);
+      activeBtn.classList.remove('border-slate-200', 'dark:border-slate-700', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+      activeBtn.classList.add('border-brand-500', 'bg-brand-500', 'text-white');
+      
+      generateCustomPrompt();
+    }
+
+    // Tab Switching Routine
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('border-b-2', 'border-brand-500', 'text-brand-500', 'dark:text-brand-400');
+        btn.classList.add('text-slate-500', 'dark:text-slate-400', 'hover:text-slate-700', 'dark:hover:text-slate-300');
+      });
+
+      document.getElementById(`tabContent_${tabId}`).classList.remove('hidden');
+      document.getElementById(`btn_${tabId}`).classList.add('border-b-2', 'border-brand-500', 'text-brand-500', 'dark:text-brand-400');
+      document.getElementById(`btn_${tabId}`).classList.remove('text-slate-500', 'dark:text-slate-400', 'hover:text-slate-700', 'dark:hover:text-slate-300');
+    }
+
+    // Solver Math Utility
+    function solveHW(changed) {
+      let pInput = document.getElementById('quickP');
+      let qInput = document.getElementById('quickQ');
+      
+      let p = parseFloat(pInput.value);
+      let q = parseFloat(qInput.value);
+
+      if (changed === 'p') {
+        q = 1 - p;
+        qInput.value = q.toFixed(4);
+      } else {
+        p = 1 - q;
+        pInput.value = p.toFixed(4);
+      }
+
+      const p2 = p * p;
+      const twoPQ = 2 * p * q;
+      const q2 = q * q;
+
+      document.getElementById('resP2').innerText = p2.toFixed(4);
+      document.getElementById('res2PQ').innerText = twoPQ.toFixed(4);
+      document.getElementById('resQ2').innerText = q2.toFixed(4);
+    }
+
+    // Dynamic AI Prompt Builder
+    function generateCustomPrompt() {
+      const persona = document.getElementById('personaSelect').value;
+      const focus = document.getElementById('topicFocusSelect').value;
+      const analogiesChecked = document.getElementById('toggleAnalogies').checked;
+      const mathChecked = document.getElementById('toggleMath').checked;
+      const adaChecked = document.getElementById('toggleADA').checked;
+      const quizChecked = document.getElementById('toggleQuiz').checked;
+
+      // Map personas to system framing
+      let systemPersonaText = "";
+      if (persona === "student_study") {
+        systemPersonaText = "Act as an adaptive, world-class Biology AI Tutor specialized in population genetics.";
+      } else if (persona === "instructor_lesson") {
+        systemPersonaText = "Act as a senior high-school AP Biology Curriculum Specialist and Instructional Designer.";
+      } else if (persona === "quiz_creator") {
+        systemPersonaText = "Act as an expert biology examiner skilled in designing standard, challenging conceptual and quantitative assessments.";
+      } else if (persona === "remedial_tutor") {
+        systemPersonaText = "Act as a supportive, empathetic remedial science educator skilled in translating advanced mathematical biology into intuitive, non-intimidating concepts.";
+      } else if (persona === "disabled_accom") {
+        systemPersonaText = "Act as an experienced Special Education and IEP Accessibility Consultant specializing in Universal Design for Learning (UDL).";
+      }
+
+      // Map topics to prompts
+      let topicDirectives = "";
+      if (focus === "all_chapter") {
+        topicDirectives = "Please build a thorough overview covering: Population Evolution, Allele frequencies, Hardy-Weinberg math equations, Genetic Drift, Gene Flow, Mutations, and the modes of Adaptive Evolution.";
+      } else if (focus === "hardy_weinberg") {
+        topicDirectives = `Focus intensely on the Hardy-Weinberg Principle of Equilibrium. Structure explanation around formulas $p + q = 1$ and $p^2 + 2pq + q^2 = 1$. \nSpecifically draw from the textbook examples:\n- ${chapterData.mathEx.v1}\n- ${chapterData.mathEx.v2}`;
+      } else if (focus === "drift_flow") {
+        topicDirectives = "Emphasize non-selective evolutionary forces: Genetic Drift, the Bottleneck Effect, and the Founder Effect. Structure a conceptual demonstration about how catastrophe reduces alleles at random (e.g. Afrikaners of South Africa, fanconi anemia families).";
+      } else if (focus === "natural_selection") {
+        topicDirectives = "Analyze and contrast the styles of Adaptive Evolution: Stabilizing, Directional, and Diversifying selections. Use specific textbook references like robin egg counts (stabilizing), industrial peppered moths (directional), and alpha vs. sneaker males (diversifying).";
+      } else if (focus === "sexual_selection") {
+        topicDirectives = "Analyze the complex systems of Sexual Selection, Sexual Dimorphism (peacocks, Argiope appensa spiders, wood ducks), the Handicap Principle, and Negative Frequency-Dependent selection (using the rock-paper-scissors throat color patterns of common side-blotched lizards).";
+      }
+
+      // Build out prompt layout
+      let promptText = `=== USER INSTRUCTION ===\n`;
+      promptText += `${systemPersonaText}\n\n`;
+      promptText += `=== PRIMARY MISSION & FOCUS ===\n`;
+      promptText += `${topicDirectives}\n\n`;
+      promptText += `DEPTH & RIGOR SPECIFICATION: This lesson study should be written with a "${selectedDepth.toUpperCase()}" tone and detailed execution level.\n\n`;
+      
+      promptText += `=== REQUIRED STRUCTURAL BLOCKS ===\n`;
+      promptText += `1. OBJECTIVES: Align strictly with our chapter goals:\n`;
+      chapterData.objectives.forEach(obj => {
+        promptText += `   - ${obj}\n`;
+      });
+      promptText += `\n`;
+
+      if (analogiesChecked) {
+        promptText += `2. REAL-WORLD ANALOGIES:\n`;
+        promptText += `   - Incorporate the "Bottleneck Bead Game Experiment" using red, blue, and yellow beads to demonstrate random sampling during catastrophes.\n`;
+        promptText += `   - Explain "Rock-Paper-Scissors Lizard Strategies" (Orange beats Blue, Blue beats Yellow, Yellow beats Orange) to show negative frequency-dependent selection.\n\n`;
+      }
+
+      if (mathChecked) {
+        promptText += `3. CRITICAL MATHEMATICAL GUIDES:\n`;
+        promptText += `   - Provide a step-by-step breakdown on solving Hardy-Weinberg equations when starting with recessive phenotype count (e.g. 250 white flowers out of 450 total plants).\n`;
+        promptText += `   - State clearly why q^2 must be computed first (recessive phenotype directly reveals the homozygous genotype).\n\n`;
+      }
+
+      if (adaChecked) {
+        promptText += `4. ADA / ACCESSIBILITY CHECKLIST FOR THE INSTRUCTOR:\n`;
+        promptText += `   - Structure all math cleanly using markdown and LaTeX symbols ($p+q=1$ and $p^2+2pq+q^2=1$) to support clean screen reader text-to-speech output.\n`;
+        promptText += `   - Supply detailed alternate textual captions (alt-text suggestions) for any graphics, such as population bell curves or phenotypic bar charts.\n\n`;
+      }
+
+      if (quizChecked) {
+        promptText += `5. COMPREHENSION VERIFICATION QUIZ:\n`;
+        promptText += `   - Provide a 3-question formative assessment targeting conceptual limits and math steps.\n`;
+        promptText += `   - Include high-fidelity, comprehensive diagnostic explanations for both correct and incorrect choices to facilitate rapid remediation.\n\n`;
+      }
+
+      promptText += `=== STYLE CONSTRAINTS ===\n`;
+      promptText += `- Formatting: Use clean markdown hierarchy, nested bulleted listings, and bold identifiers.\n`;
+      promptText += `- Avoid generic placeholders; supply specific biological data from the provided textbook sections.\n`;
+      promptText += `- Ensure all math formulas are wrapped in standard markdown LaTeX delimiters (e.g. $...$ or $$...$$).\n\n`;
+      promptText += `Please execute this comprehensive biology study/lesson output now.`;
+
+      document.getElementById('promptTextArea').value = promptText;
+    }
+
+    // Copier Utilities
+    function copyToClipboard(elementId) {
+      const textarea = document.getElementById(elementId);
+      textarea.select();
+      textarea.setSelectionRange(0, 99999); // Mobile compatibility
+
+      try {
+        const success = document.execCommand('copy');
+        if (success) {
+          const toast = document.getElementById('toastNotification');
+          toast.classList.remove('opacity-0');
+          toast.classList.add('opacity-100');
+          setTimeout(() => {
+            toast.classList.remove('opacity-100');
+            toast.classList.add('opacity-0');
+          }, 2500);
+        }
+      } catch (err) {
+        console.error("Could not copy using execCommand: ", err);
+      }
+    }
+
+    // Text File Exporter Utility
+    function downloadAsTxt(elementId, filename) {
+      const text = document.getElementById(elementId).value;
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    // Quiz Checking Routine
+    function checkAnswer(questionNum, chosen, buttonElement) {
+      const explanationDiv = document.getElementById(`qExplain-${questionNum}`);
+      explanationDiv.classList.remove('hidden');
+
+      // Clear previous styles for buttons inside this question group
+      document.querySelectorAll(`.q-btn-${questionNum}`).forEach(btn => {
+        btn.classList.remove('bg-emerald-500/10', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300');
+        btn.classList.remove('bg-rose-500/10', 'border-rose-500', 'text-rose-700', 'dark:text-rose-300');
+      });
+
+      if (questionNum === 1) {
+        if (chosen === 'A') {
+          buttonElement.classList.add('bg-emerald-500/10', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300');
+          explanationDiv.innerHTML = `<strong>Correct! (A. 0.20)</strong><br>
+          If 20 plants out of 500 are homozygous recessive (vv), then the genotypic frequency $q^2 = 20 / 500 = 0.04$. <br>
+          To find $q$, take the square root: $q = \\sqrt{0.04} = 0.20$. Hence, $p = 1 - 0.20 = 0.80$.`;
+        } else {
+          buttonElement.classList.add('bg-rose-500/10', 'border-rose-500', 'text-rose-700', 'dark:text-rose-300');
+          explanationDiv.innerHTML = `<strong>Incorrect.</strong><br>
+          Remember, 20/500 gives $q^2 = 0.04$, which is the frequency of the homozygous recessive <em>genotype</em>, not the recessive <em>allele</em> $q$. You must take the square root of 0.04 to find $q$.`;
+        }
+      } else if (questionNum === 2) {
+        if (chosen === 'B') {
+          buttonElement.classList.add('bg-emerald-500/10', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300');
+          explanationDiv.innerHTML = `<strong>Correct! (B)</strong><br>
+          This is a textbook case of <em>directional selection</em>. Due to industrial air pollution (soot covering tree lichens), light moths lost their camouflage. Moths on the darker end of the spectrum survived at higher rates, shifting the population's overall genetic variance toward the darker phenotype.`;
+        } else {
+          buttonElement.classList.add('bg-rose-500/10', 'border-rose-500', 'text-rose-700', 'dark:text-rose-300');
+          explanationDiv.innerHTML = `<strong>Incorrect.</strong><br>
+          It was directional selection (shifting towards one extreme - dark), not diversifying (which favors both extremes) or genetic drift (which is entirely random chance).`;
+        }
+      } else if (questionNum === 3) {
+        if (chosen === 'C') {
+          buttonElement.classList.add('bg-emerald-500/10', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300');
+          explanationDiv.innerHTML = `<strong>Correct! (C)</strong><br>
+          The side-blotched lizards exhibit negative frequency-dependent selection. Rare phenotypes are favored when common ones are exploited (Orange beats Blue, Blue beats Yellow, Yellow beats Orange), keeping all three colors in cyclic equilibrium in the population.`;
+        } else {
+          buttonElement.classList.add('bg-rose-500/10', 'border-rose-500', 'text-rose-700', 'dark:text-rose-300');
+          explanationDiv.innerHTML = `<strong>Incorrect.</strong><br>
+          Stabilizing selection would reduce variance to one average middle phenotype. Instead, the rare strategies cycle through frequency-dependent pressures.`;
+        }
+      }
+    }
+
+    // Generate prompt immediately on load
+    window.onload = function() {
+      generateCustomPrompt();
+      // Listen to parameters changes to rebuild the prompt instantly
+      document.getElementById('personaSelect').addEventListener('change', generateCustomPrompt);
+      document.getElementById('topicFocusSelect').addEventListener('change', generateCustomPrompt);
+      document.getElementById('toggleAnalogies').addEventListener('change', generateCustomPrompt);
+      document.getElementById('toggleMath').addEventListener('change', generateCustomPrompt);
+      document.getElementById('toggleADA').addEventListener('change', generateCustomPrompt);
+      document.getElementById('toggleQuiz').addEventListener('change', generateCustomPrompt);
+    };
+  </script>
+</body>
+</html>
