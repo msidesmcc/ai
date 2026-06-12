@@ -3,139 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professor Mary Sides | McLennan Community College</title>
+    <title>Mary Sides | Professor of Biology | McLennan Community College</title>
+    <!-- Tailwind CSS for rich modern utilities -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        sage: {
+                            50: '#f4f7f5',
+                            100: '#e3eae5',
+                            200: '#c8d6ce',
+                            600: '#738f7e',
+                            700: '#5c7365',
+                            800: '#47594e',
+                            900: '#232b26',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Embedded CSS styling */
-        :root {
-            --primary-color: #0b3c5d; /* Classic academic blue */
-            --secondary-color: #328cc1;
-            --text-color: #1d2731;
-            --bg-color: #f9f9f9;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            color: var(--text-color);
-            background-color: var(--bg-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-
-        header {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            padding: 2rem 1rem;
-            text-align: center;
-            border-bottom: 4px solid var(--secondary-color);
+        h1, h2, h3, .academic-title {
+            font-family: 'Playfair Display', serif;
         }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
+        .hero-gradient {
+            background: linear-gradient(135deg, #14532d 0%, #166534 50%, #15803d 100%);
         }
-
-        header p {
-            margin: 0.5rem 0 0 0;
-            font-size: 1.2rem;
-            font-weight: 300;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .welcome-box {
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .welcome-box h2 {
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: var(--secondary-color);
-            color: #ffffff;
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-color);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem 1rem;
-            font-size: 0.9rem;
-            color: #777;
-            border-top: 1px solid #ddd;
-            margin-top: 4rem;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(227, 234, 229, 0.6);
         }
     </style>
 </head>
-<body>
+<body class="bg-sage-50 text-slate-800 min-h-screen flex flex-col selection:bg-emerald-200">
 
-    <header>
-        <h1>Mary Sides</h1>
-        <p>Professor | McLennan Community College</p>
+    <!-- NAVIGATION HEADER -->
+    <header class="sticky top-0 z-50 glass-card transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <!-- Academic Seal-like SVG Icon -->
+                <div class="w-10 h-10 bg-emerald-800 rounded-full flex items-center justify-center text-white font-serif font-bold text-lg shadow-md transition-transform group-hover:rotate-12">
+                    MS
+                </div>
+                <div>
+                    <span class="block text-emerald-900 font-bold tracking-tight text-lg leading-tight">Mary Sides</span>
+                    <span class="block text-xs text-sage-600 font-semibold tracking-wider uppercase">McLennan Community College</span>
+                </div>
+            </a>
+            
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-toggle" class="md:hidden text-emerald-900 focus:outline-none p-1 rounded hover:bg-emerald-100 transition-colors" aria-label="Toggle Navigation Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon-hamburger" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="text-sage-800 hover:text-emerald-700 font-medium transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-emerald-700 hover:after:w-full after:transition-all">About Me</a>
+                <a href="#courses" class="text-sage-800 hover:text-emerald-700 font-medium transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-emerald-700 hover:after:w-full after:transition-all">Courses</a>
+                <a href="#resources" class="text-sage-800 hover:text-emerald-700 font-medium transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-emerald-700 hover:after:w-full after:transition-all">Student Hub</a>
+                <a href="biology.html" class="px-4 py-2 text-emerald-800 hover:text-emerald-900 bg-emerald-100/80 hover:bg-emerald-200/80 border border-emerald-200/50 rounded-lg font-semibold text-sm transition-all shadow-sm">Biology Dept</a>
+                <a href="lesson_generator.html" class="px-4 py-2 text-white bg-emerald-800 hover:bg-emerald-900 rounded-lg font-semibold text-sm transition-all shadow-md shadow-emerald-900/10 hover:shadow-emerald-900/20">Lesson Gen</a>
+            </nav>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-nav" class="hidden md:hidden px-6 pb-6 pt-2 bg-white/95 border-t border-sage-100 flex flex-col space-y-4 shadow-inner">
+            <a href="#about" class="block text-sage-800 hover:text-emerald-700 font-semibold py-1">About Me</a>
+            <a href="#courses" class="block text-sage-800 hover:text-emerald-700 font-semibold py-1">Courses</a>
+            <a href="#resources" class="block text-sage-800 hover:text-emerald-700 font-semibold py-1">Student Hub</a>
+            <hr class="border-sage-100">
+            <a href="biology.html" class="flex items-center justify-center space-x-2 py-2 text-emerald-800 bg-emerald-100/80 rounded-lg font-semibold text-sm transition-all">
+                <span>Biology Portal</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+            <a href="lesson_generator.html" class="flex items-center justify-center space-x-2 py-2 text-white bg-emerald-800 rounded-lg font-semibold text-sm transition-all">
+                <span>Lesson Generator</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+            </a>
+        </div>
     </header>
 
-    <div class="container">
-        <section class="welcome-box">
-            <h2 id="dynamic-greeting">Welcome</h2>
-            <p>Welcome to my academic homepage. Here you can find information regarding my courses, research interests, and institutional responsibilities at McLennan Community College.</p>
-        </section>
+    <!-- HERO SECTION -->
+    <section class="hero-gradient text-white py-16 md:py-24 relative overflow-hidden flex-shrink-0">
+        <!-- Abstract Decorative Background Leaf -->
+        <div class="absolute right-[-10%] bottom-[-20%] w-96 h-96 text-emerald-800/25 pointer-events-none">
+            <svg class="w-full h-full" fill="currentColor" viewBox="0 0 100 100">
+                <path d="M50 0 C 70 30, 100 40, 100 100 C 40 100, 30 70, 50 0 Z"/>
+            </svg>
+        </div>
 
-        <section>
-            <h3>Course Directory</h3>
-            <p>Explore resources, lecture notes, and syllabus details for my biology courses:</p>
-            
-            <div class="nav-links">
-                <a href="biology.html" class="btn">View Biology Course Pages &rarr;</a>
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-12 gap-12 items-center relative z-10">
+            <!-- Hero Left: Text Details -->
+            <div class="md:col-span-7 space-y-6">
+                <span class="inline-block px-3 py-1 bg-emerald-700/60 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wider uppercase border border-emerald-500/30">
+                    Department of Science & Biology
+                </span>
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+                    Mary Sides
+                </h1>
+                <p class="text-xl md:text-2xl text-emerald-100 font-light max-w-xl">
+                    Professor of Biology at McLennan Community College. Passionate about empowering students through active inquiry, ecological science, and critical thinking.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#resources" class="px-6 py-3 bg-white text-emerald-900 font-bold rounded-lg shadow-lg hover:bg-emerald-50 transition-all transform hover:-translate-y-0.5">
+                        Interactive Tools
+                    </a>
+                    <a href="#contact" class="px-6 py-3 border border-white/30 hover:border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all">
+                        Get In Touch
+                    </a>
+                </div>
             </div>
-        </section>
-    </div>
 
-    <footer>
-        <p>&copy; 2026 Mary Sides | McLennan Community College</p>
+            <!-- Hero Right: Illustrated Showcase Card -->
+            <div class="md:col-span-5 flex justify-center">
+                <div class="bg-emerald-900/40 p-8 rounded-2xl border border-emerald-600/30 max-w-sm w-full backdrop-blur-md relative">
+                    <!-- Bio-design SVG decoration -->
+                    <div class="flex justify-center mb-6">
+                        <div class="relative w-24 h-24 bg-white/10 rounded-full flex items-center justify-center">
+                            <!-- DNA helix style graphic -->
+                            <svg class="w-12 h-12 text-emerald-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 19.5c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4.5c0-1.1-.9-2-2-2H6c-1.1 0-2 .9-2 2v15z M12 6v12M9 9h6M9 13h6"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="space-y-4 text-center">
+                        <h3 class="text-lg font-bold tracking-wide">Academic Focus</h3>
+                        <p class="text-sm text-emerald-100/90 leading-relaxed">
+                            Fostering biological literacy, exploration of ecological dynamics, and providing curated, state-of-the-art materials for tomorrow's researchers.
+                        </p>
+                        <div class="pt-4 border-t border-emerald-700/50 flex justify-around text-sm text-emerald-200">
+                            <div>
+                                <span class="block text-xl font-bold text-white">15+</span>
+                                <span class="text-xs">Years Teaching</span>
+                            </div>
+                            <div>
+                                <span class="block text-xl font-bold text-white">4+</span>
+                                <span class="text-xs">Active Courses</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK GATEWAY ACTIONS (MAIN REQUEST MANDATE) -->
+    <section class="max-w-6xl mx-auto px-6 -mt-8 relative z-20">
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Biology Link Card -->
+            <a href="biology.html" class="group bg-white p-8 rounded-2xl border border-sage-100 shadow-xl hover:shadow-2xl hover:border-emerald-200 transition-all duration-300 transform hover:-translate-y-1 block">
+                <div class="flex items-start space-x-5">
+                    <div class="p-4 bg-emerald-50 group-hover:bg-emerald-100 rounded-xl text-emerald-800 transition-colors">
+                        <!-- Biology Flask/Cell SVG -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-emerald-900 group-hover:text-emerald-700 transition-colors">Biology Department Portal</h3>
+                            <!-- Arrow Icon -->
+                            <svg class="w-5 h-5 text-emerald-700 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </div>
+                        <p class="text-sage-600 mt-2 text-sm leading-relaxed">
+                            Discover class syllabi, custom lab documentation, course schedules, and valuable links regarding standard Biological and Ecological Sciences at MCC.
+                        </p>
+                        <span class="inline-block mt-4 text-xs font-bold text-emerald-700 group-hover:underline uppercase tracking-wider">Explore Biology Hub &rarr;</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Lesson Generator Link Card -->
+            <a href="lesson_generator.html" class="group bg-white p-8 rounded-2xl border border-sage-100 shadow-xl hover:shadow-2xl hover:border-emerald-200 transition-all duration-300 transform hover:-translate-y-1 block">
+                <div class="flex items-start space-x-5">
+                    <div class="p-4 bg-emerald-800 group-hover:bg-emerald-900 rounded-xl text-white transition-colors">
+                        <!-- AI/Interactive Brain Spark/Gear SVG -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-emerald-900 group-hover:text-emerald-700 transition-colors">Interactive Lesson Generator</h3>
+                            <!-- Arrow Icon -->
+                            <svg class="w-5 h-5 text-emerald-700 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </div>
+                        <p class="text-sage-600 mt-2 text-sm leading-relaxed">
+                            Access our smart digital curriculum companion. Generate customized biological review programs, worksheets, study plans, and topic outlines instantly.
+                        </p>
+                        <span class="inline-block mt-4 text-xs font-bold text-emerald-800 group-hover:underline uppercase tracking-wider">Launch Tool &rarr;</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- BIOGRAPHY SECTION -->
+    <section id="about" class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+        <div class="grid md:grid-cols-12 gap-12 items-center">
+            <div class="md:col-span-5 relative">
+                <!-- Stacked background frames for depth -->
+                <div class="absolute inset-0 bg-emerald-200/50 rounded-2xl transform rotate-3 scale-102"></div>
+                <div class="relative bg-white border border-sage-100 p-6 rounded-2xl shadow-lg">
+                    <div class="border-2 border-dashed border-emerald-100 p-4 rounded-xl flex flex-col items-center text-center">
+                        <!-- Abstract Microscope / Lab Art -->
+                        <svg class="w-32 h-32 text-emerald-800 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke-width="1"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v8m-4-4h8"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 17v1a3 3 0 006 0v-1"/>
+                        </svg>
+                        <span class="text-emerald-900 font-bold font-serif">Biology & Nature Lab Study</span>
+                        <p class="text-xs text-sage-600 mt-1">McLennan Community College Science Wing</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-7 space-y-6">
+                <div class="flex items-center space-x-2 text-emerald-800 font-bold uppercase tracking-wider text-xs">
+                    <span class="w-8 h-[2px] bg-emerald-800"></span>
+                    <span>About Mary Sides</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-emerald-950">Teaching the Next Generation of Scientists</h2>
+                <p class="text-sage-800 leading-relaxed">
+                    Hello and welcome to my academic hub! As a Professor of Biology at McLennan Community College in Waco, Texas, my objective is to clarify the natural world for my students and provide them with the robust mental tools needed for academic and clinical careers.
+                </p>
+                <p class="text-sage-800 leading-relaxed">
+                    My instruction combines active lecturing, real-world case studies, and engaging laboratory practices. Whether you are aiming for nursing, planning to transfer to a four-year institution, or fulfilling core requirements, you will find resources here designed to support your journey.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <div class="p-4 bg-white/70 border border-sage-100 rounded-lg">
+                        <strong class="block text-emerald-900 font-bold">Office Hours</strong>
+                        <span class="text-sm text-sage-600">Mon/Wed: 10:00 AM – 12:00 PM</span>
+                        <span class="block text-xs text-sage-500">Science Building, Room 214</span>
+                    </div>
+                    <div class="p-4 bg-white/70 border border-sage-100 rounded-lg">
+                        <strong class="block text-emerald-900 font-bold">Contact Email</strong>
+                        <span class="text-sm text-sage-600">msides@mclennan.edu</span>
+                        <span class="block text-xs text-sage-500">Response within 24 business hours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COURSES SECTION -->
+    <section id="courses" class="bg-gradient-to-b from-sage-100/50 to-sage-50 py-16 border-y border-sage-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="text-xs font-bold text-emerald-800 tracking-wider uppercase">Instruction Portfolio</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-emerald-950">Courses Offered at MCC</h2>
+                <p class="text-sage-600">
+                    Below are the key programs I instruct. Select your respective section to locate your class portals, course requirements, and resources.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Course 1 -->
+                <div class="bg-white rounded-2xl border border-sage-100 p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-xl flex items-center justify-center mb-6 font-bold text-lg">I</div>
+                        <h3 class="text-xl font-bold text-emerald-900 mb-2">BIOL 1406</h3>
+                        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wider mb-4">Biology for Science Majors I</p>
+                        <p class="text-sm text-sage-600 leading-relaxed">
+                            An intensive introduction to fundamental chemistry, cellular biology, energetics, and genetic mechanics.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-sage-100 mt-6 flex justify-between items-center">
+                        <span class="text-xs text-sage-500">4 Credits / Lab Req</span>
+                        <a href="biology.html#biol1406" class="text-xs font-bold text-emerald-800 hover:underline">Syllabus &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="bg-white rounded-2xl border border-sage-100 p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-xl flex items-center justify-center mb-6 font-bold text-lg">II</div>
+                        <h3 class="text-xl font-bold text-emerald-900 mb-2">BIOL 1407</h3>
+                        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wider mb-4">Biology for Science Majors II</p>
+                        <p class="text-sm text-sage-600 leading-relaxed">
+                            Investigation into organismal diversity, plant and animal physiology, taxonomy, and ecological interdependencies.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-sage-100 mt-6 flex justify-between items-center">
+                        <span class="text-xs text-sage-500">4 Credits / Lab Req</span>
+                        <a href="biology.html#biol1407" class="text-xs font-bold text-emerald-800 hover:underline">Syllabus &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="bg-white rounded-2xl border border-sage-100 p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-xl flex items-center justify-center mb-6 font-bold text-lg">E</div>
+                        <h3 class="text-xl font-bold text-emerald-900 mb-2">BIOL 2406</h3>
+                        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wider mb-4">Environmental Biology</p>
+                        <p class="text-sm text-sage-600 leading-relaxed">
+                            Study of global ecosystems, human impact on environmental cycles, conservation, and alternative resources.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-sage-100 mt-6 flex justify-between items-center">
+                        <span class="text-xs text-sage-500">4 Credits / Field Labs</span>
+                        <a href="biology.html#biol2406" class="text-xs font-bold text-emerald-800 hover:underline">Syllabus &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE HUB / WIDGET / QUICK TIP BOX -->
+    <section id="resources" class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+        <div class="bg-emerald-900 text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
+            <!-- Background element -->
+            <div class="absolute left-[-5%] top-[-5%] w-64 h-64 bg-emerald-800/40 rounded-full blur-3xl"></div>
+            
+            <div class="grid md:grid-cols-12 gap-8 items-center relative z-10">
+                <div class="md:col-span-7 space-y-6">
+                    <span class="inline-block px-3 py-1 bg-emerald-800/80 rounded-full text-xs font-bold tracking-wider uppercase border border-emerald-700">
+                        Smart Academic Tools
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-bold">Need customized study material right now?</h2>
+                    <p class="text-emerald-100 leading-relaxed">
+                        I've designed an interactive, state-of-the-art **Lesson Generator** helper tool. You can input biology topics (like cellular respiration, meiosis, or food chains) and generate organized learning frameworks, summaries, and self-test guides.
+                    </p>
+                    <div class="pt-4">
+                        <a href="lesson_generator.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-white text-emerald-900 font-extrabold rounded-lg hover:bg-emerald-50 transition-all shadow-md">
+                            <span>Open Lesson Generator</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:col-span-5 flex justify-center">
+                    <!-- Interactive Mini-Card (Pure Javascript Interaction Demonstration) -->
+                    <div class="bg-emerald-950/70 p-6 rounded-2xl border border-emerald-700/50 w-full max-w-sm space-y-4">
+                        <h4 class="text-sm font-bold tracking-wide uppercase text-emerald-300">Quick Bio Trivia</h4>
+                        <p id="trivia-text" class="text-sm text-emerald-100 h-20 overflow-y-auto leading-relaxed">
+                            "Mitochondria are known as the powerhouses of the cell, generating the cellular chemical energy currency ATP."
+                        </p>
+                        <button id="next-trivia" class="w-full py-2 bg-emerald-800 hover:bg-emerald-700 text-xs font-bold rounded-lg transition-all border border-emerald-600">
+                            Get Another Fact
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CONTACT SECTION -->
+    <footer id="contact" class="bg-sage-900 text-white mt-auto border-t-4 border-emerald-800">
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Academic Identity Column -->
+                <div class="md:col-span-2 space-y-4">
+                    <span class="block text-2xl font-serif font-bold text-emerald-400">Mary Sides</span>
+                    <p class="text-sage-300 text-sm max-w-sm">
+                        Professor of Biology at McLennan Community College. Educating students in Baylor-area and Central Texas science programs.
+                    </p>
+                    <div class="pt-2 text-xs text-sage-400">
+                        © 2026 McLennan Community College. All rights reserved.
+                    </div>
+                </div>
+
+                <!-- Quick Navigation Links -->
+                <div class="space-y-4">
+                    <h4 class="text-emerald-400 font-bold uppercase tracking-wider text-xs">Portals</h4>
+                    <ul class="space-y-2 text-sm text-sage-300">
+                        <li><a href="biology.html" class="hover:text-white transition-colors">Biology Department</a></li>
+                        <li><a href="lesson_generator.html" class="hover:text-white transition-colors">Lesson Planner & Generator</a></li>
+                        <li><a href="https://www.mclennan.edu" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">McLennan Website ↗</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Brightspace LMS Login ↗</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Location Info -->
+                <div class="space-y-4">
+                    <h4 class="text-emerald-400 font-bold uppercase tracking-wider text-xs">Office Contact</h4>
+                    <p class="text-sm text-sage-300">
+                        McLennan Community College<br>
+                        Science Building, Rm 214<br>
+                        1400 College Dr, Waco, TX 76708
+                    </p>
+                    <p class="text-sm text-sage-300">
+                        Email: <a href="mailto:msides@mclennan.edu" class="underline hover:text-emerald-300">msides@mclennan.edu</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </footer>
 
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
     <script>
-        // Embedded JavaScript to customize greeting based on time of day
-        document.addEventListener('DOMContentLoaded', function() {
-            const greetingElement = document.getElementById('dynamic-greeting');
-            const currentHour = new Date().getHours();
-            let greeting = "Welcome";
+        // Trivia Array for Javascript Widget
+        const triviaList = [
+            "Photosynthesis converts carbon dioxide and water into glucose and oxygen, utilizing sunlight captured by chlorophyll pigments.",
+            "Deoxyribonucleic acid (DNA) is formed as a double helix and holds genetic blueprints inside eukaryotic nuclear membranes.",
+            "McLennan Community College is situated alongside the Bosque River, offering beautiful local biological study habitats right here in Waco!",
+            "Did you know? Enceladus and Europa are ocean worlds in our solar system that hold immense interest for modern astrobiologists.",
+            "Meiosis is a specific cell division framework producing four distinct gamete cells with half the chromosomal count of parent cells.",
+            "Ecosystems are comprised of complex networks between biotic (living organisms) and abiotic (non-living physical surroundings) components."
+        ];
 
-            if (currentHour < 12) {
-                greeting = "Good Morning, Welcome!";
-            } else if (currentHour < 18) {
-                greeting = "Good Afternoon, Welcome!";
+        let currentTriviaIndex = 0;
+
+        const triviaTextEl = document.getElementById('trivia-text');
+        const nextTriviaBtn = document.getElementById('next-trivia');
+
+        // Click interaction for bio trivia cycle
+        nextTriviaBtn.addEventListener('click', () => {
+            currentTriviaIndex = (currentTriviaIndex + 1) % triviaList.length;
+            
+            // Subtle transition animation using JS/CSS
+            triviaTextEl.style.opacity = '0';
+            setTimeout(() => {
+                triviaTextEl.innerText = `"${triviaList[currentTriviaIndex]}"`;
+                triviaTextEl.style.opacity = '1';
+            }, 150);
+        });
+
+        // Toggle logic for Responsive Mobile Menu
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const hamburgerIcon = document.getElementById('menu-icon-hamburger');
+        const closeIcon = document.getElementById('menu-icon-close');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            const isHidden = mobileNav.classList.contains('hidden');
+            if (isHidden) {
+                mobileNav.classList.remove('hidden');
+                hamburgerIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
             } else {
-                greeting = "Good Evening, Welcome!";
+                mobileNav.classList.add('hidden');
+                hamburgerIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
             }
-
-            greetingElement.textContent = greeting;
         });
     </script>
-
 </body>
 </html>
